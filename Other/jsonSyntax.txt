@@ -1,0 +1,103 @@
+
+
+
+////////////
+//CONSTANT//
+////////////
+
+//fileName and index added to root procedurally
+//letter updated to be lowercase procedurally
+
+    {
+        "letter": "",//lowercase letter
+        "text": ""//singular word for constant since all constants are existential
+    }
+
+
+
+/////////////
+//PREDICATE//
+/////////////
+
+//fileName and index added to root procedurally
+//letter updated to be uppercase procedurally
+
+    //predicate:
+    {
+        "letter": "A",
+        "sentence": [
+            //phrase:
+            {
+                "type": "term",//term/text
+
+            //IFF TERM
+                "term":
+                {
+                    "type": "",//variable/constant
+                //IFF VARIABLE
+                    "key": -1,//-1 => new var; greater than or equal to 0 => existing var
+                //IFF CONSTANT
+                    "fileName": ""
+                }
+
+            //IFF TEXT
+                "text":
+                {
+                    "singular": "",
+                    "plural": ""
+                }
+                
+            }
+        ]
+    }
+
+
+
+///////////////
+//SUPPOSITION//
+///////////////
+
+//fileName added to root procedurally
+
+    {
+        "data":
+        //unit:
+        {
+            "type": ``,//predicate/expression
+            "negated": t/f,
+            "quantifiers"://list of quantifiers applying to this object
+            [
+                //quantifier:
+                {
+                    "type": ``,//existential or universal,
+                    "key": ``//key of variable for reference by predicate child units
+                }
+            ],
+
+        //IFF PREDICATE
+            "predicate":
+            {
+                "fileName": ``//"predicate.json" string for reference of this predicate; rest of predicate properties added procedurally
+            },
+            "terms"://list of constants or variables applying to this predicate; deleted procedurally
+            [
+                //term:
+                {
+                        "type": "",//variable/constant
+                    //IFF VARIABLE
+                        "key": -1,//-1 => new var; greater than or equal to 0 => existing var
+                    //IFF CONSTANT
+                        "fileName": ""
+                }
+            ]
+
+        //ELSE IFF EXPRESSION
+            "operation": ``,//text form of operator acting on these operands (conjunction, disjunction, conditional, revconditional, biconditional, xdisjunction)
+            "operands"://two more supposition objects which act as operands
+            [
+                {},//operand/supposition object one
+                {}//operand/supposition object two
+            ]
+
+        }
+    }

@@ -1,0 +1,192 @@
+/*FONTS*/
+
+@font-face {
+	font-family: eurofurence;
+	src: url(Fonts/eurofurence.ttf);
+}
+
+@font-face {
+	font-family: geosans;
+	src: url(Fonts/GeosansLight.ttf);
+}
+
+@font-face {
+    font-family: gothic;
+    src: url(Fonts/CenturyGothic.ttf);
+}
+
+@font-face {
+    font-family: cafe;
+    src: url(Fonts/LouisGeorgeCafe.ttf);
+}
+
+
+/*MAIN*/
+
+* {
+    user-select: none;
+
+    overflow: hidden;
+    white-space: nowrap;
+
+    text-align: center;
+
+    transition-duration: 0.1s;
+    transition-delay: 0.05s;
+}
+
+::selection {
+    background: #333;
+}
+
+body {
+    width: 100vw;
+    height: 100vh;
+    background: #000;
+    margin: 0;
+
+    display: flex;
+    flex-direction: column;
+}
+
+body > * {
+    margin: 0;
+}
+
+h1 {
+    color: #FFF;
+    font-size: 2.5vh;
+    min-height: 2.5vh;
+    font-family: gothic;
+    text-transform: uppercase;
+    margin: 0;
+}
+
+
+table {
+    table-layout: fixed;
+    border-collapse: collapse;
+} table > * {/*thead/tbody/tfoot*/
+    direction: rtl;
+    overflow-y: scroll;
+} table > * > * {/*all tr*/
+    display: flex;
+    flex-direction: row;
+
+    direction: ltr;
+    font-size: 120%;
+} table > * > *:not(.borderless) {/*bordered tr*/
+    border: 0.25vw #111;
+    border-style: dotted none none none;
+} table > * > * > * {/*th/td*/
+    color: #FFF;
+    flex-basis: 0;
+    font-family: cafe;
+    font-size: 1vw;
+    white-space: break-spaces;
+} table > * > * > th {
+    flex-grow: 0.25;
+    text-align: left;
+} table > * > * > td {
+    flex-grow: 1;
+    color: #AAA;
+}
+
+/*SPECIFIC ELEMENTS*/
+#titleContainer {
+    display: flex;
+    flex-direction: row;
+
+    flex-basis: 0;
+    flex-grow: 5;
+    
+    overflow: visible;
+} #titleContainer > * {
+    font-size: 2vh;
+    margin: auto 1.25vw;
+    text-align: left;
+    
+    flex-basis: 0;
+    flex-grow: 1;
+} #titleContainer > img {
+    max-width: 20%;
+} #titleContainer > h1 {
+    max-width: 100%;
+}
+
+#sectionContainer {
+    display: flex;
+    flex-direction: row;
+    
+    flex-basis: 0;
+    flex-grow: 95;
+} #sectionContainer > * {/*viewer/workspace container*/
+    display: flex;
+    flex-direction: column;
+
+    flex-basis: 0;
+    flex-grow: 1;
+} #sectionContainer > * > * {/*viewer/workspace*/
+    display: flex;
+    flex-direction: column;
+
+    flex-basis: 0;
+    flex-grow: 1;
+
+    min-height: 20%;
+
+    border: 0.25vw #222;
+    border-style: dotted none none none;
+} #sectionContainer > * > * > * {/*things in viewer/workspace*/
+    display: flex;
+    flex-direction: column;
+} #sectionContainer > * > * > h1 {/*h1 in viewer/workspace*/
+    flex-basis: 0;
+    flex-grow: 5;
+
+    padding: 1% 0;
+    display: inline-block;
+} #sectionContainer > * > * > *:not(h1) {/*non-h1 in viewer/worksapce*/
+    flex-basis: 0;
+    flex-grow: 95;
+}
+
+
+#viewerContainer > * {/*viewer*/
+    border-style: dotted dotted none none;
+}
+
+/*GENERAL CHANGES*/
+.lowercase {
+    text-transform: lowercase;
+} .uppercase {
+    text-transform: uppercase;
+}
+
+/*.editText {
+    user-select: text;
+} .editText:hover {
+    cursor: text;
+}*/
+
+.subText {
+    text-decoration: overline;
+    font-size: 50%;
+} .superText {
+    text-decoration: underline;
+    font-size: 75%;
+}
+
+.hoverSelect {
+    text-decoration: underline;
+} .hoverSelect:hover {
+    cursor: text;
+}
+
+.alignLeft {
+    text-align: left;
+}
+
+.wrap {
+    white-space: pre-line;
+}

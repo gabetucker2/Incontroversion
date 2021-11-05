@@ -1,0 +1,40 @@
+{
+   "data":
+   {
+      "type": "expression",
+      "negated": false,
+      "quantifiers": [
+         {"type": "existential", "key": 0},
+         {"type": "universal", "key": 1}
+      ],
+      "operation": "xdisjunction",
+      "operands": [
+         {
+            "type": "predicate",
+            "negated": false,
+            "quantifiers": [],
+            "predicate":
+            {
+               "fileName": "friends.json"
+            },
+            "terms": [
+               {"type": "variable", "key": 1},
+               {"type": "variable", "key": 0}
+            ]
+         },
+         {
+            "type": "predicate",
+            "negated": true,
+            "quantifiers": [],
+            "predicate":
+            {
+               "fileName": "defend.json"
+            },
+            "terms": [
+               {"type": "variable", "key": 0},
+               {"type": "variable", "key": 1}
+            ]
+         }
+      ]
+   }
+}

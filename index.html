@@ -1,0 +1,42 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <meta charset = "UTF-8">
+        <link rel = "stylesheet" href = "index.css"/>
+        <title>Incontroversion</title>
+    </head>
+
+    <body>
+
+        <script src = "Scripts/variableModule.js"></script>
+        <script src = "Scripts/methodModule.js"></script>
+        <script src = "Scripts/setupModule.js"></script>
+
+        <div id = "titleContainer">
+            <img src = "Images/Text.png">
+            <h1>Domain of discourse: <span class = "lowercase">all <span class = "hoverSelect" id = "DomainOfDiscourse">XXXXXXXXXX</span></span></h1>
+        </div>
+
+        <div id = "sectionContainer">
+            <div id = "viewerContainer">
+                <div><!--CONSTANTS-->
+                    <h1>Constants <span class = "subText lowercase darken">a-v</span></h1>
+                    <table><tbody id = "constantsTable"></tbody></table>
+                </div><div><!--PREDICATES-->
+                    <h1>Predicates <span class = "superText uppercase darken">A-Z</span> <span class = "subText lowercase darken">w-z</span></h1>
+                    <table><tbody id = "predicatesTable"></tbody></table>
+                </div><div><!--SUPPOSITIONS-->
+                    <h1>Suppositions</h1>
+                    <table><tbody id = "suppositionsTable"></tbody></table>
+                </div>
+            </div><div id = "workspaceContainer">
+                <div>
+                    <h1>Workspace</h1>
+                </div>
+            </div>
+        </div>
+
+        <script src="Scripts/renderModule.js"></script>
+        
+    </body>
+</html>
