@@ -64,7 +64,6 @@
         //unit:
         {
             "type": ``,//predicate/expression
-            "negated": t/f,
             "quantifiers"://list of quantifiers applying to this object
             [
                 //quantifier:
@@ -96,7 +95,7 @@
             "operands"://two more supposition objects which act as operands
             [
                 {},//operand/supposition object one
-                {}//operand/supposition object two
+                {}//operand/supposition object two (iff bidirectional operator)
             ]
 
         }

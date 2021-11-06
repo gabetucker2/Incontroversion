@@ -2,25 +2,29 @@
    "data":
    {
       "type": "expression",
-      "negated": false,
       "quantifiers": [],
       "operation": "conjunction",
       "operands": [
          {
-            "type": "predicate",
-            "negated": true,
+            "type": "expression",
             "quantifiers": [],
-            "predicate":
-            {
-               "fileName": "happy.json"
-            },
-            "terms": [
-               {"type": "constant", "fileName": "deer.json"}
+            "operation": "negation",
+            "operands": [
+               {
+                  "type": "predicate",
+                  "quantifiers": [],
+                  "predicate":
+                  {
+                     "fileName": "happy.json"
+                  },
+                  "terms": [
+                     {"type": "constant", "fileName": "deer.json"}
+                  ]
+               }
             ]
          },
          {
             "type": "expression",
-            "negated": false,
             "quantifiers": [
                {"type": "universal", "key": 0}
             ],
@@ -28,7 +32,6 @@
             "operands": [
                {
                   "type": "predicate",
-                  "negated": false,
                   "quantifiers": [],
                   "predicate":
                   {
@@ -41,36 +44,47 @@
                },
                {
                   "type": "expression",
-                  "negated": true,
-                  "quantifiers": [
-                     {"type": "existential", "key": 1}
-                  ],
-                  "operation": "disjunction",
+                  "quantifiers": [],
+                  "operation": "negation",
                   "operands": [
                      {
-                        "type": "predicate",
-                        "negated": true,
-                        "quantifiers": [],
-                        "predicate":
-                        {
-                           "fileName": "defend.json"
-                        },
-                        "terms": [
-                           {"type": "constant", "fileName": "cat.json"},
-                           {"type": "variable", "key": 1}
-                        ]
-                     },
-                     {
-                        "type": "predicate",
-                        "negated": false,
-                        "quantifiers": [],
-                        "predicate":
-                        {
-                           "fileName": "friends.json"
-                        },
-                        "terms": [
-                           {"type": "variable", "key": 0},
-                           {"type": "constant", "fileName": "fish.json"}
+                        "type": "expression",
+                        "quantifiers": [
+                           {"type": "existential", "key": 1}
+                        ],
+                        "operation": "disjunction",
+                        "operands": [
+                           {
+                              "type": "expression",
+                              "quantifiers": [],
+                              "operation": "negation",
+                              "operands": [
+                                 {
+                                    "type": "predicate",
+                                    "quantifiers": [],
+                                    "predicate":
+                                    {
+                                       "fileName": "defend.json"
+                                    },
+                                    "terms": [
+                                       {"type": "constant", "fileName": "cat.json"},
+                                       {"type": "variable", "key": 1}
+                                    ]
+                                 }
+                              ]
+                           },
+                           {
+                              "type": "predicate",
+                              "quantifiers": [],
+                              "predicate":
+                              {
+                                 "fileName": "friends.json"
+                              },
+                              "terms": [
+                                 {"type": "variable", "key": 0},
+                                 {"type": "constant", "fileName": "fish.json"}
+                              ]
+                           }
                         ]
                      }
                   ]

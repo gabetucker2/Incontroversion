@@ -2,7 +2,6 @@
    "data":
    {
       "type": "expression",
-      "negated": false,
       "quantifiers": [
          {"type": "existential", "key": 0},
          {"type": "universal", "key": 1}
@@ -11,7 +10,6 @@
       "operands": [
          {
             "type": "predicate",
-            "negated": false,
             "quantifiers": [],
             "predicate":
             {
@@ -23,16 +21,22 @@
             ]
          },
          {
-            "type": "predicate",
-            "negated": true,
+            "type": "expression",
             "quantifiers": [],
-            "predicate":
-            {
-               "fileName": "defend.json"
-            },
-            "terms": [
-               {"type": "variable", "key": 0},
-               {"type": "variable", "key": 1}
+            "operation": "negation",
+            "operands": [
+               {
+                  "type": "predicate",
+                  "quantifiers": [],
+                  "predicate":
+                  {
+                     "fileName": "defend.json"
+                  },
+                  "terms": [
+                     {"type": "variable", "key": 0},
+                     {"type": "variable", "key": 1}
+                  ]
+               }
             ]
          }
       ]

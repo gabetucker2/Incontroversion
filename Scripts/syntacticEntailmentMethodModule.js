@@ -218,7 +218,7 @@
             }
 
             /**
-             * Disjunction elimination
+             * Inclusive disjunction elimination
              * @param {int} selection  
              *      0 => antecendent returned
              *      1 => consequent returned
@@ -252,6 +252,7 @@
                     for (const workDer of workingDerivations) {
                         if (workDer == antecedent) {
                             returnTruthValue(Object.assign({}, consequent));
+                            break;
                         }
                     }
                 }
@@ -261,31 +262,20 @@
             /**
              * Biconditional elimination
              */
-            function biconditional(first) {
+            function biconditional() {
 
-                //TODO: FILL OUT
                 conditional(0);
+                conditional(1);
                 
-
-                //p if and only if q
-
-                //if a p exists
-
-                //figure out how to check for 2 suppositions
-                
-
-                returnTruthValue(derivation);
-
             }
 
             /**
-             * TODO: FILL OUT
+             * Exclusive disjunction elimination
              */
             function xdisjunction() {
 
-                //TODO: FILL OUT
-
-                returnTruthValue(derivation);
+                introduction().negation();
+                biconditional();
 
             }
 
@@ -294,9 +284,7 @@
              */
             function negation() {
 
-                //TODO: FILL OUT
-
-                returnTruthValue(derivation);
+                returnTruthValue(Object.assign({}, derivation.operands[0]));
 
             }
 
@@ -358,7 +346,7 @@
             //ELIMINATION
             if (additional().checkType() === `expression`) {
 
-                switch (additional().checkOperation()) {
+                switch (additional().returnOperation()) {
                     case `universal`:
                         derive(derivation).elimination().universal();
                         break;

@@ -2,7 +2,6 @@
    "data":
    {
       "type": "predicate",
-      "negated": false,
       "quantifiers": [
          {"type": "existential", "key": 0}
       ],

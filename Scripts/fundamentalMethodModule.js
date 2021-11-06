@@ -269,7 +269,7 @@
          * @ensures invalid values return an error
          */
          function processUnit(root) {
-    
+            
             if (root.type === `predicate`) {
                 
                 //transfer and remove terms
@@ -302,7 +302,10 @@
             } else if (root.type === `expression`) {
     
                 processUnit(root.operands[0]);
-                processUnit(root.operands[1]);
+
+                if (root.operation !== `negation`) {
+                    processUnit(root.operands[1]);
+                }
     
             } else {
                 console.error(`ERROR: rawToProcessed.supposition > processUnit invalid unit type (non-predicate/expression)`);
@@ -630,13 +633,13 @@
                         if (variables.storage.has(term.key)) {
 
                             //variable already exists; thus defined quantifier
-                            v = getVariable(term.key);
+                            v = variable().create(term.key);
                             termIsPlural = v.universal;
 
                         } else {
 
                             //variable does not exist; thus no quantifiers since quantifiers section creates variable representation
-                            v = createVariable(term.key, false);
+                            v = variable().create(term.key, false);
                             termIsPlural = v.universal;
 
                         }
@@ -701,86 +704,94 @@
 
                 let workingLogicHTML = ``, workingEnglishHTML = ``;
 
-                //negation
-                if (root.negated) {
+                if (root.operation === `negation`) {
+
+                    //add negation stuff then process its inner
                     const negationHTML = symbols.get(`negation`);
                     workingLogicHTML += negationHTML.logicHTML;
                     workingEnglishHTML += `${negationHTML.englishHTML} `;
-                } else if (root.negated == undefined) {
-                    console.error(`ERROR: processedToSet > supposition > processUnit caught supposition ${ processed.data.fileName } having no negated property`);
-                }
-                
-                workingEnglishHTML += root.type === `predicate` || depth === 0 ? `` : `(`;
-
-                //quantifiers
-                for (const quantifier of root.quantifiers) {
                     
-                    workingLogicHTML += `(`;
+                    const unit = processUnit(root.operands[0]);
+                    workingLogicHTML += unit[0];
+                    workingEnglishHTML += unit[1];
 
-                    if (quantifier.type === `universal`) {
-                        const quantifierHTML = symbols.get(`universal`);
-                        workingLogicHTML += quantifierHTML.logicHTML;
-                        workingEnglishHTML += `${quantifierHTML.englishHTML} `;
-                    } else if (quantifier.type === `existential`) {
-                        const quantifierHTML = symbols.get(`existential`);
-                        workingLogicHTML += quantifierHTML.logicHTML;
-                        workingEnglishHTML += `${quantifierHTML.englishHTML} `;
-                    } else {
-                        console.error(`ERROR: processedToSet > supposition > processUnit caught supposition ${ processed.fileName } having invalid quantifier (non-universal/existential)`);
+                } else {
+                    
+                    //add non-negated stuff
+
+                    workingEnglishHTML += root.type === `predicate` || depth === 0 ? `` : `(`;
+
+                    //quantifiers
+                    for (const quantifier of root.quantifiers.slice().reverse()) {//just to render outer-most first (since top of stack is end of array)
+                        
+                        workingLogicHTML += `(`;
+
+                        if (quantifier.type === `universal`) {
+                            const quantifierHTML = symbols.get(`universal`);
+                            workingLogicHTML += quantifierHTML.logicHTML;
+                            workingEnglishHTML += `${quantifierHTML.englishHTML} `;
+                        } else if (quantifier.type === `existential`) {
+                            const quantifierHTML = symbols.get(`existential`);
+                            workingLogicHTML += quantifierHTML.logicHTML;
+                            workingEnglishHTML += `${quantifierHTML.englishHTML} `;
+                        } else {
+                            console.error(`ERROR: processedToSet > supposition > processUnit caught supposition ${ processed.fileName } having invalid quantifier (non-universal/existential)`);
+                        }
+
+                        const quantifiedVar = variable().create(quantifier.key, quantifier.type === `universal`);
+
+                        workingLogicHTML += additional().processedToLogicHTML(`variable`, quantifiedVar.letter, quantifiedVar.index);
+                        workingLogicHTML += `)`;
+
+                        workingEnglishHTML += `${quantifier.type === `universal` ? domainOfDiscourse.plural : domainOfDiscourse.singular} `;
+                        workingEnglishHTML += additional().processedToEnglishHTML(`variable`, {string: quantifiedVar.letter, index: quantifiedVar.index});
+                        workingEnglishHTML += `, `;
+
                     }
 
-                    const quantifiedVar = createVariable(quantifier.key, quantifier.type === `universal`);
+                    if (root.type === `predicate`) {
 
-                    workingLogicHTML += additional().processedToLogicHTML(`variable`, quantifiedVar.letter, quantifiedVar.index);
-                    workingLogicHTML += `)`;
+                        //predicate
+                        const predicate = processedToSet(root.predicate, {components: false, logicHTML: true, englishHTML: true}).predicate();
+                        workingLogicHTML += predicate.logicHTML;
+                        workingEnglishHTML += predicate.englishHTML;
 
-                    workingEnglishHTML += `${quantifier.type === `universal` ? domainOfDiscourse.plural : domainOfDiscourse.singular} `;
-                    workingEnglishHTML += additional().processedToEnglishHTML(`variable`, {string: quantifiedVar.letter, index: quantifiedVar.index});
-                    workingEnglishHTML += `, `;
+                    } else if (root.type === `expression`) {
+
+                        //expression
+                        depth++;
+
+                        workingLogicHTML += depth === 1 ? `` : `(`;
+
+                        //operation 1
+                        const operationHTML = symbols.get(root.operation);
+                        workingEnglishHTML += operationHTML.englishHTML.antecedent != null ? `${ operationHTML.englishHTML.antecedent } ` : ``;
+
+                        //operand 1
+                        const operand1Results = processUnit(root.operands[0]);
+                        workingLogicHTML += operand1Results[0];
+                        workingEnglishHTML += operand1Results[1];
+
+                        //operation 2
+                        workingLogicHTML += ` ${ operationHTML.logicHTML } `;
+                        workingEnglishHTML += operationHTML.englishHTML.consequent != null ? `${ operationHTML.englishHTML.consequent } ` : ``;
+
+                        //operand 2
+                        const operand2Results = processUnit(root.operands[1]);
+                        workingLogicHTML += operand2Results[0];
+                        workingEnglishHTML += operand2Results[1];
+                        
+                        workingLogicHTML += depth === 1 ? `` : `)`;
+                        workingEnglishHTML += depth === 1 ? `` : `)`;
+
+                        depth--;
+                        
+                    } else {
+                        console.error(`ERROR: processedToSet > supposition > processUnit caught supposition ${ processed.fileName } having invalid unit type (non-predicate/expression)`);
+                    }
 
                 }
-
-                if (root.type === `predicate`) {
-
-                    //predicate
-                    const predicate = processedToSet(root.predicate, {components: false, logicHTML: true, englishHTML: true}).predicate();
-                    workingLogicHTML += predicate.logicHTML;
-                    workingEnglishHTML += predicate.englishHTML;
-
-                } else if (root.type === `expression`) {
-
-                    //expression
-                    depth++;
-
-                    workingLogicHTML += depth === 1 ? `` : `(`;
-
-                    //operation 1
-                    const operationHTML = symbols.get(root.operation);
-                    workingEnglishHTML += operationHTML.englishHTML.antecedent != null ? `${ operationHTML.englishHTML.antecedent } ` : ``;
-
-                    //operand 1
-                    const operand1Results = processUnit(root.operands[0]);
-                    workingLogicHTML += operand1Results[0];
-                    workingEnglishHTML += operand1Results[1];
-
-                    //operation 2
-                    workingLogicHTML += ` ${ operationHTML.logicHTML } `;
-                    workingEnglishHTML += operationHTML.englishHTML.consequent != null ? `${ operationHTML.englishHTML.consequent } ` : ``;
-
-                    //operand 2
-                    const operand2Results = processUnit(root.operands[1]);
-                    workingLogicHTML += operand2Results[0];
-                    workingEnglishHTML += operand2Results[1];
-                    
-                    workingLogicHTML += depth === 1 ? `` : `)`;
-                    workingEnglishHTML += depth === 1 ? `` : `)`;
-
-                    depth--;
-                    
-                } else {
-                    console.error(`ERROR: processedToSet > supposition > processUnit caught supposition ${ processed.fileName } having invalid unit type (non-predicate/expression)`);
-                }
-
+                
                 return [workingLogicHTML, workingEnglishHTML];
 
             }

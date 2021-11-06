@@ -14,7 +14,7 @@ const constantsTable = document.getElementById("constantsTable");
 for (const letterGroup of Array.from(constants.values())) {
     for (const processed of letterGroup) {
 
-        refreshVariables();
+        variable().refresh();
         
         const set = processedToSet(processed, { components: false, logicHTML: true, englishHTML: true }).constant();
         
@@ -34,7 +34,7 @@ const predicatesTable = document.getElementById("predicatesTable");
 for (const letterGroup of Array.from(predicates.values())) {
     for (const processed of letterGroup) {
     
-        refreshVariables();
+        variable().refresh();
 
         const set = processedToSet(processed, { components: false, logicHTML: true, englishHTML: true }).predicate();
         
@@ -53,7 +53,7 @@ const suppositionsTable = document.getElementById("suppositionsTable");
 
 for (const processed of suppositions) {
     
-    refreshVariables();
+    variable().refresh();
 
     const set = processedToSet(processed, { components: false, logicHTML: true, englishHTML: true }).supposition();
     
