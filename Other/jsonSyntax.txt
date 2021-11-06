@@ -69,7 +69,7 @@
                 //quantifier:
                 {
                     "type": ``,//existential or universal,
-                    "key": ``//key of variable for reference by predicate child units
+                    "key": -1//key of variable for reference by predicate child units
                 }
             ],
 

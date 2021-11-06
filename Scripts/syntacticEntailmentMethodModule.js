@@ -3,38 +3,14 @@
  */
  function checkSyntacticEntailment(fileName) {
 
-    const goal = ...;//TODO: define
+    //set goal
+    const goal = get(fileName, {components:true, logicHTML:false, englishHTML: false}).supposition();
 
-    //TODO: add to workingDerivations all suppositions except the goal
-
-    /**
-     * Additional methods for this module.
-     */
-     function additional() {
-
-        /**
-         * Returns "expression" or "predicate".
-         */
-        function returnType() {
-
-            //TODO: FILL OUT
-
+    //add starting suppositions into the workingDerivations (all except for the fileName Object)
+    for (const supposition of suppositions) {
+        if (supposition.fileName !== fileName) {
+            workingDerivations.push(supposition);
         }
-
-        /**
-         * Returns the operation type as a string.
-         */
-        function returnOperation() {
-
-            //TODO: FILL OUT
-
-        }
-
-        return {
-            returnType: returnType,
-            returnOperation: returnOperation
-        }
-
     }
 
     /**
@@ -46,23 +22,12 @@
      function derive(derivation) {
 
         /**
-         * Reiteration derivation rule for this module.
-         */
-        function reiteration() {
-                
-            //TODO: FILL OUT
-
-            returnTruthValue(derivation);
-            
-        }
-
-        /**
          * Introduction derivation rules for this module.
          */
         function introduction() {
 
             /**
-             * TODO: FILL OUT
+             * Universal introduction
              */
             function universal() {
 
@@ -179,22 +144,47 @@
         function elimination() {
 
             /**
-             * TODO: FILL OUT
+             * Universal elimination
+             *          eliminates the last element of the working derivations
+             * 
+             * @param {Object} constant
+             *              constant with which to substitute the predicate
              */
-            function universal() {
-
-                //
+            function universal(constant) {
+                
+                //replace this quantifier with constant
+                for (const operand of derivation.operands) {
+                    if (operand.type === `predicate`) {
+                        for (const term of operand.terms) {
+                            if (term === `variable` && term.key === derivation.quantifiers[derivation.quantifiers.length - 1].key) {
+                                //transform the term
+                                term.type = "constant";
+                                //del key
+                                delete term.key;
+                                //define fileName
+                                Object.defineProperties(term, { fileName: {enumerable: true, value: constant.fileName} });
+                                break;
+                            }
+                        }
+                    }
+                }
+                
+                derivation.quantifiers.pop();
 
                 returnTruthValue(derivation);
 
             }
 
             /**
-             * TODO: FILL OUT
+             * Existential elimination
+             *          eliminates the last element of the working derivations
+             * 
+             * @param {Object} constant
+             *              constant with which to substitute the predicate
              */
-            function existential() {
+            function existential(constant) {
 
-                //TODO: FILL OUT
+                //TODO get it
 
                 returnTruthValue(derivation);
 
@@ -280,7 +270,7 @@
             }
 
             /**
-             * TODO: FILL OUT
+             * Negation elimination
              */
             function negation() {
 
@@ -302,7 +292,6 @@
         }
 
         return {
-            reiteration: reiteration,
             introduction: introduction,
             elimination: elimination
         }
@@ -317,7 +306,7 @@
      * 
      * @param {Object} derivation
      *              transformed components with which to check against `goal` for syntactic equivalence, and thus, validity
-     * @param {bool} deepen
+     * @param {boolean} deepen
      *              whether or not to iterate through `workingDerivations` for more transformations (i.e., deepen)
      * @updates workingDerivation with non-repeat derivations found and refreshes it at the end
      * @returns boolean value to represent whether there is syntactic entailment
@@ -336,21 +325,48 @@
             workingDerivations.push(derivation);
 
             //deepen
-            
-            //REITERATION
-            
-            
-            //INTRODUCTION
-            
+            if (derivation.type === `expression`) {
+                //INTRODUCTION
+                
+                //universal
 
-            //ELIMINATION
-            if (additional().checkType() === `expression`) {
 
-                switch (additional().returnOperation()) {
+                //existential
+
+
+                //conjunction & disjunction
+                for (const d of workingDerivations) {
+                    derive(derivation).introduction().conjunction();
+                    derive(derivation).introduction().disjunction();
+                }
+
+                //conditional
+                
+
+                //revconditional
+
+
+                //biconditional
+
+
+                //xdisjunction
+
+
+                //negation
+
+
+                //ELIMINATION
+
+                switch (derivation.operation) {
                     case `universal`:
-                        derive(derivation).elimination().universal();
+                        for (const constantsOfLetter of Array.from(constants.values())) {
+                            for (const constant of constantsOfLetter) {
+                                derive(derivation).elimination().universal(constant);
+                            }
+                        }
                         break;
                     case 'exisistential':
+                        //TODO: ensure you don't need preconditions met
                         derive(derivation).elimination().existential();
                         break;
                     case 'conjunction':
@@ -379,14 +395,11 @@
                     default:
                         break;
                 }
+
             }
 
-            //deepen existential
-
-            //deepen .... through each one, fill this out
-
         } else {
-            //VOID
+            //VOID so that it can break the recursive derivations
         }
 
         if (result !== null) {
@@ -399,8 +412,7 @@
     }
     
     return {
-        introduction: introduction,
-        elimination: elimination,
+        derive: derive,
         returnTruthValue: returnTruthValue
     }
 
