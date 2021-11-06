@@ -164,25 +164,15 @@
      function additional() {
 
         /**
-         * Iterates the countMap with raw.letter for a constant or predicate.
+         * Iterates the `map` with raw.letter for a constant or predicate.
          * 
-         * @param {Map} countMap
+         * @param {Map} map
          * @requires raw.letter is the desired letter to be added
          */
-         function addLetterToCountMap(countMap) {
+         function addLetterToCountMap(map) {
 
-            letter = raw.letter;
-
-            if (countMap.get(letter) == undefined) {
-                //create representation in countMap if doesn't already exist
-                countMap.set(letter, 1);
-            } else {
-                //iterate count
-                countMap.set(letter, countMap.get(letter) + 1);
-            }
-
-            //set index
-            Object.defineProperties(raw, { index: {enumerable: true, value: countMap.get(letter) - 1}});
+            //set index property
+            Object.defineProperties(raw, { index: {enumerable: true, value: map.get(raw.letter).length + 1}});
 
         }
 
@@ -198,7 +188,8 @@
      function constant() {
 
         raw.letter = raw.letter.toLowerCase();
-        additional().addLetterToCountMap(countConstants);
+
+        additional().addLetterToCountMap(constants);
 
         return main();
 
@@ -211,7 +202,8 @@
      function predicate() {
 
         raw.letter = raw.letter.toUpperCase();
-        additional().addLetterToCountMap(countPredicates);
+
+        additional().addLetterToCountMap(predicates);
 
         return main();
 
@@ -235,14 +227,14 @@
          function processUnit(root) {
     
             if (root.type === `predicate`) {
-    
+                
                 //transfer and remove terms
                 terms = JSON.parse(JSON.stringify(root.terms));
                 delete root.terms;
                 
                 //turn them into the predicate
                 const p = getPredicate(root.predicate.fileName, {components: true, logicHTML: false, englishHTML: false}).components;
-    
+                
                 Object.defineProperties(root.predicate, { letter: {enumerable: true, value: p.letter} });
                 Object.defineProperties(root.predicate, { index: {enumerable: true, value: p.index} });
                 Object.defineProperties(root.predicate, { sentence: {enumerable: true, value: JSON.parse(JSON.stringify(p.sentence))} });
@@ -321,12 +313,10 @@
          * 
          * @param {Map} map
          *              Map for `phi` to update
-         * @param {Map} countMap
-         *              countMap for `phi` to update
          */
-        function setMap(map, countMap) {
+        function setMap(map) {
 
-            map.set(processed.letter + (countMap.get(processed.letter) - 1), processed);
+            map.set(processed.letter, map.get(processed.letter).push(processed) ? map.get(processed.letter) : map.get(processed.letter));
 
         }
 
@@ -341,7 +331,7 @@
      */
      function constant() {
 
-        additional().setMap(constants, countConstants);
+        additional().setMap(constants);
 
         return main();
 
@@ -352,7 +342,7 @@
      */
      function predicate() {
 
-        additional().setMap(predicates, countPredicates);
+        additional().setMap(predicates);
 
         return main();
 
@@ -408,7 +398,7 @@
          */
          function getProcessedFromMapByFileName(map) {
 
-            return Array.from(map.values()).find(m => m.fileName === fileName);
+            return Array.from(map.values()).find(m => m.find(n => n.fileName === fileName))[0];
 
         }
 
@@ -476,8 +466,8 @@
  * @param {Object} processed
  *              `processed` Object
  * @param {Object} selection
- *              `set` object with three components used to decide which data to process and return: { components: t/f, logicHTML: t/f, englishHTML: t/f }
- * @returns filtered `set` Object
+ *              `set` Object with three components used to decide which data to process and return: { components: t/f, logicHTML: t/f, englishHTML: t/f }
+ * @returns filtered `set` Object { components: t/f, logicHTML: t/f, englishHTML: t/f }
  * @ensures if processed is null, an error will be returned
  */
  function processedToSet(processed, selection) {
@@ -765,7 +755,7 @@
                 logicHTML = processUnitResults[0];
                 englishHTML = processUnitResults[1];
             } else {
-                console.error(`ERROR: processedToSetSupposition requires that supposition ${ processed.fileName } has data property inside its root`)
+                console.error(`ERROR: processedToSet > supposition requires that supposition ${ processed.fileName } has data property inside its root`)
             }
 
         }
@@ -890,6 +880,93 @@
 
 /**
  * TOP-DOWN - GET)
+ * Gets `set` from storage of type.
+ * 
+ * @param fileName
+ *              fileName to get
+ * @param selection
+ *              object with three components which is used to decide which data to process and return (for efficiency):
+ * 
+ *              { components: t/f, logicHTML: t/f, englishHTML: t/f }
+ * @returns `set`
+ */
+ function get() {
+
+    /**
+     * Additional methods for this module.
+     */
+     function additional() {
+
+        /**
+         * TODO: FILL OUT
+         */
+        function TODOFillOut(countMap) {
+
+            //TODO: FILL OUT
+
+        }
+
+        return {
+            TODOFillOut: TODOFillOut
+        }
+
+    }
+
+    /**
+     * TODO: FILL OUT
+     */
+     function constant() {
+
+        //TODO: FILL OUT
+
+        return main();
+
+    }
+
+    /**
+     * TODO: FILL OUT
+     */
+     function predicate() {
+
+        //TODO: FILL OUT
+
+        return main();
+
+    }
+
+    /**
+     * TODO: FILL OUT
+     */
+     function supposition() {
+
+        //TODO: FILL OUT
+
+        return main();
+
+    }
+
+    /**
+     * TODO: FILL OUT
+     */
+     function main() {
+        
+        //TODO: FILL OUT
+
+        return TODOFillOut;
+
+    }
+    
+    return {
+        constant: constant,
+        predicate: predicate,
+        supposition: supposition
+    }
+
+}
+
+
+/**
+ * TOP-DOWN - GET)
  * Gets constant Set from storage of type.
  * 
  * @param fileName
@@ -912,7 +989,7 @@
 
 /**
  * TOP-DOWN - GET)
- * Gets a pure predicate Set from storage of type.
+ * Gets a pure predicate `set` from storage of type.
  * NOTE: do NOT use this method if you have a pre-processed supposition predicate; instead, use processedToSetPredicate.
  * 
  * @param fileName
@@ -921,7 +998,7 @@
  *              object with three components which is used to decide which data to process and return (for efficiency):
  * 
  *              { components: t/f, logicHTML: t/f, englishHTML: t/f }
- * @returns Set
+ * @returns `set` { components: t/f, logicHTML: t/f, englishHTML: t/f }
  */
  function getPredicate(fileName, selection) {
 
@@ -949,7 +1026,7 @@
 
     //STEP 4)
     const processed = mapToProcessed(fileName).supposition();
-
+    
     //STEP 5)
     return processedToSet(processed, selection).supposition();
 
