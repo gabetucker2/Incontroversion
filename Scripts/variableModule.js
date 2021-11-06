@@ -20,15 +20,15 @@ const variables = {
 }
 
 //CONSTANTS STORAGE
-const constants = new Map();//of form {'c0': {}, 'd0': {}, 'd1': {}} where key == letter-index pairing and value == components
-const countConstants = new Map();//of form {'c': 1, 'd': 2} where key == letter and value == letter count in constants Map
+const constants = new Map()//of form {'c': [{}, {}, {}], 'd': [{}]}
 
 //PREDICATE STORAGE
-const predicates = new Map();//of form {'A0': {}, 'R0': {}, 'R1': {}} where key == letter-index pairing and value == components
-const countPredicates = new Map();//of form {'A': 1, 'R': 2} where key == letter and value == letter count in predicates Map
+const predicates = new Map()//of form {'C': [{}, {}, {}], 'D': [{}]}
 
 //SUPPOSITIONS STORAGE
-const suppositions = [];
+const suppositions = [];//of form [{}, {}, {}]
+const limitDerivations = 10000;
+let workingDerivations = [];//of form [{}, {}, {}]
 
 //SYMBOLS STORAGE
 const symbols = new Map();

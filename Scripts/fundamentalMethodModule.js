@@ -3,56 +3,100 @@
 //////////////
 
 /**
- * EXTENSIONS - VARIABLES)
- * Get a variable from a key.
- * 
- * @param key
- *              key for desired variable
- * @returns the variable from the key as { letter: '', index: i, universal: t/f }
- * @ensures if key is below 0, returns an error
+ * TODO: FILL OUT
  */
- function getVariable(key) {
+ function variable() {
 
-    if (key >= 0 && variables.storage.has(key)) {
-        return variables.storage.get(key);
-    } else {
-        console.error(`ERROR: variable => invalid key in mapToSetVariable`);
+    /**
+     * Additional methods for this module.
+     */
+     function additional() {
+
+        /**
+         * TODO: FILL OUT
+         */
+        function TODOFillOut() {
+
+            //TODO: FILL OUT
+
+        }
+
+        return {
+            TODOFillOut: TODOFillOut
+        }
+
     }
 
-}
+    /**
+     * Get a variable from a key.
+     * 
+     * @param key
+     *              key for desired variable
+     * @returns the variable from the key as { letter: '', index: i, universal: t/f }
+     * @ensures if key is below 0, returns an error
+     */
+     function get(key) {
 
-/**
- * EXTENSIONS - VARIABLES)
- * Returns the next variable object.
- * 
- * @param key
- *              key of var to create (-1 => variables.size; >= 0 => key)
- * @param universal
- *              t/f for whether variable is universal (T) or existential (F)
- * @updates variables inserts new variable
- * @returns the new variable as an object { letter: '', index: i, universal: t/f }
- * @requires variable must not already exist
- * @ensures if key which would be created already exists, returns error
- */
- function createVariable(key, universal) {
+        if (key >= 0 && variables.storage.has(key)) {
+            return variables.storage.get(key);
+        } else {
+            console.error(`ERROR: variable => invalid key in mapToSetVariable`);
+        }
 
-    const thisVariable = {letter: variables.letters[variables.storage.size % variables.letters.length], index: Math.floor(variables.storage.size / variables.letters.length), universal: universal};
+    }
 
-    variables.storage.set(key === -1 ? variables.storage.size : key, thisVariable);
+    /**
+     * Returns the next variable object.
+     * 
+     * @param key
+     *              key of var to create (-1 => variables.size; >= 0 => key)
+     * @param universal
+     *              t/f for whether variable is universal (T) or existential (F)
+     * @updates variables inserts new variable
+     * @returns the new variable as an object { letter: '', index: i, universal: t/f }
+     * @requires variable must not already exist
+     * @ensures if key which would be created already exists, returns error
+     */
+     function create(key, universal) {
 
-    return thisVariable;
+        const thisVariable = {letter: variables.letters[variables.storage.size % variables.letters.length], index: Math.floor(variables.storage.size / variables.letters.length), universal: universal};
 
-}
+        variables.storage.set(key === -1 ? variables.storage.size : key, thisVariable);
+    
+        return thisVariable;
 
-/**
- * EXTENSIONS - VARIABLES)
- * Refresh variable counter; next variable is w0.
- * 
- * @updates variables are cleared
- */
- function refreshVariables() {
+        return main();
 
-    variables.storage.clear();
+    }
+
+    /**
+     * Refresh variable counter; next variable is w0.
+     * 
+     * @updates variables are cleared
+     */
+     function refresh() {
+
+        variables.storage.clear();
+
+    }
+
+    /**
+     * Main method for this module.
+     * TODO: FILL OUT
+     */
+     function main() {
+        
+        //TODO: FILL OUT
+
+        return TODOFillOut;
+
+    }
+    
+    return {
+        get: get,
+        create: create,
+        refresh: refresh
+    }
 
 }
 
@@ -233,7 +277,7 @@
                 delete root.terms;
                 
                 //turn them into the predicate
-                const p = getPredicate(root.predicate.fileName, {components: true, logicHTML: false, englishHTML: false}).components;
+                const p = get(root.predicate.fileName, {components: true, logicHTML: false, englishHTML: false}).predicate().components;
                 
                 Object.defineProperties(root.predicate, { letter: {enumerable: true, value: p.letter} });
                 Object.defineProperties(root.predicate, { index: {enumerable: true, value: p.index} });
@@ -299,7 +343,6 @@
  * @param {Object} processed
  *              `processed` Object
  * @requires `phi` must not already exist as a Map value
- * @returns `phi` Map
  */
  function processedToMap(processed) {
 
@@ -333,8 +376,6 @@
 
         additional().setMap(constants);
 
-        return main();
-
     }
 
     /**
@@ -343,8 +384,6 @@
      function predicate() {
 
         additional().setMap(predicates);
-
-        return main();
 
     }
 
@@ -355,16 +394,12 @@
 
         suppositions.push(processed);
 
-        return main();
-
     }
 
     /**
-     * Returns `processed` Object. 
+     * Main method for this module.
      */
-     function main() {
-        return processed;
-    }
+     function main() { }
     
     return {
         constant: constant,
@@ -611,7 +646,7 @@
                     
                     } else if(term.type === `constant`) {
                         
-                        const c = getConstant(term.fileName, {components: true, logicHTML: true, englishHTML: true});
+                        const c = get(term.fileName, {components: true, logicHTML: true, englishHTML: true}).constant();
                         logicHTML += c.logicHTML;
                         //only add `the` before non-capitalized text names for constants
                         englishHTML += (c.components.text.slice(0, 1) === c.components.text.slice(0, 1).toUpperCase() ? `` : `the `) + `${c.englishHTML}`;
@@ -803,77 +838,130 @@
 
 /**
  * TOP-DOWN - SETUP)
- * Sets up Map for fileName from JSON.
- * 
- * @param fileName
- *              fileName for type
- * @param type
- *              type
- * @updates all things from STEP 1) to STEP 3)
- * @ensures invalid types are reported
- */
- function setup(fileName, type) {
-    
-    //STEP 1)
-    let raw;
-    if (type == `constant`) {
-        raw = JSONToRaw(fileName).constant();
-    } else if (type == `predicate`) {
-        raw = JSONToRaw(fileName).predicate();
-    } else if (type == `supposition`) {
-        raw = JSONToRaw(fileName).supposition();
-    }
-
-    //STEP 2)
-    switch (type) {
-        case `constant`:
-            rawToProcessed(raw, fileName).constant();
-            break;
-        case `predicate`:
-            rawToProcessed(raw, fileName).predicate();
-            break;
-        case `supposition`:
-            rawToProcessed(raw, fileName).supposition();
-            break;
-        default:
-            console.error(`ERROR: invalid type entered into setup`);
-            break;
-    }
-
-    //STEP 3)
-    const processed = raw;
-    switch (type) {
-        case `constant`:
-            processedToMap(processed).constant();
-            break;
-        case `predicate`:
-            processedToMap(processed).predicate();
-            break;
-        case `supposition`:
-            processedToMap(processed).supposition();
-            break;
-        default:
-            console.error(`ERROR: invalid type entered into setup`);
-            break;
-    }
-
-}
-
-/**
- * TOP-DOWN - SETUP)
- * Sets up all JSON saves.
+ * Sets up JSON save for given scope.
  * 
  * @updates all things from STEP 1) to STEP 3)
+ * @requires one, type, or all is specified in method call
  */
- function globalSetup() {
+ function setup() {
 
-    const filePaths = [`Saves/Constants`, `Saves/Predicates`, `Saves/Suppositions`];
-    const types = [`constant`, `predicate`, `supposition`];
+    /**
+     * Additional methods for this module.
+     */
+     function additional() { return { } }
 
-    for (let i = 0; i < filePaths.length; i++) {
-        for (const fileName of fileSystem.readdirSync(filePaths[i])) {
-            setup(fileName, types[i]);
+    /**
+     * Sets up JSON save for a given fileName.
+     */
+     function one(fileName) {
+
+        function constant() {
+
+            //STEP 1)
+            components = JSONToRaw(fileName).constant();//raw
+
+            //STEP 2)
+            rawToProcessed(components, fileName).constant();//raw => processed
+
+            //STEP 3)
+            processedToMap(components).constant();//processed
+
         }
+
+        function predicate() {
+
+            //STEP 1)
+            components = JSONToRaw(fileName).predicate();//raw
+
+            //STEP 2)
+            rawToProcessed(components, fileName).predicate();//raw => processed
+
+            //STEP 3)
+            processedToMap(components).predicate();//processed
+
+        }
+
+        function supposition() {
+
+            //STEP 1)
+            components = JSONToRaw(fileName).supposition();//raw
+
+            //STEP 2)
+            rawToProcessed(components, fileName).supposition();//raw => processed
+
+            //STEP 3)
+            processedToMap(components).supposition();//processed
+
+        }
+        
+        return {
+            constant: constant,
+            predicate: predicate,
+            supposition: supposition
+        }
+
+    }
+
+    /**
+     * Sets up all JSON saves for a given type.
+     */
+     function type() {
+
+         function constant() {
+    
+            const typeFolder = `Saves/Constants`;
+            for (const fileName of fileSystem.readdirSync(typeFolder)) {
+                one(fileName).constant();
+            }
+    
+        }
+    
+         function predicate() {
+    
+            const typeFolder = `Saves/Predicates`;
+            for (const fileName of fileSystem.readdirSync(typeFolder)) {
+                one(fileName).predicate();
+            }
+    
+        }
+    
+         function supposition() {
+    
+            const typeFolder = `Saves/Suppositions`;
+            for (const fileName of fileSystem.readdirSync(typeFolder)) {
+                one(fileName).supposition();
+            }
+    
+        }
+        
+        return {
+            constant: constant,
+            predicate: predicate,
+            supposition: supposition
+        }
+
+    }
+
+    /**
+     * Sets up all JSON saves.
+     */
+     function all() {
+
+        type().constant();
+        type().predicate();
+        type().supposition();
+
+    }
+
+    /**
+     * Main method for this module.
+     */
+     function main() { }
+    
+    return {
+        one: one,
+        type: type,
+        all: all
     }
 
 }
@@ -885,41 +973,26 @@
  * @param fileName
  *              fileName to get
  * @param selection
- *              object with three components which is used to decide which data to process and return (for efficiency):
- * 
- *              { components: t/f, logicHTML: t/f, englishHTML: t/f }
+ *              Object with three components which is used to decide which data to process and return: { components: t/f, logicHTML: t/f, englishHTML: t/f }
  * @returns `set`
  */
- function get() {
+ function get(fileName, selection) {
 
     /**
      * Additional methods for this module.
      */
-     function additional() {
-
-        /**
-         * TODO: FILL OUT
-         */
-        function TODOFillOut(countMap) {
-
-            //TODO: FILL OUT
-
-        }
-
-        return {
-            TODOFillOut: TODOFillOut
-        }
-
-    }
+     function additional() { return { } }
 
     /**
      * TODO: FILL OUT
      */
      function constant() {
 
-        //TODO: FILL OUT
-
-        return main();
+        //STEP 4)
+        const processed = mapToProcessed(fileName).constant();
+        
+        //STEP 5)
+        return processedToSet(processed, selection).constant();
 
     }
 
@@ -928,9 +1001,11 @@
      */
      function predicate() {
 
-        //TODO: FILL OUT
-
-        return main();
+        //STEP 4)
+        const processed = mapToProcessed(fileName).predicate();
+        
+        //STEP 5)
+        return processedToSet(processed, selection).predicate();
 
     }
 
@@ -939,95 +1014,23 @@
      */
      function supposition() {
 
-        //TODO: FILL OUT
-
-        return main();
+        //STEP 4)
+        const processed = mapToProcessed(fileName).supposition();
+        
+        //STEP 5)
+        return processedToSet(processed, selection).supposition();
 
     }
 
     /**
-     * TODO: FILL OUT
+     * Main method for this module.
      */
-     function main() {
-        
-        //TODO: FILL OUT
-
-        return TODOFillOut;
-
-    }
+     function main() { }
     
     return {
         constant: constant,
         predicate: predicate,
         supposition: supposition
     }
-
-}
-
-
-/**
- * TOP-DOWN - GET)
- * Gets constant Set from storage of type.
- * 
- * @param fileName
- *              fileName to get
- * @param selection
- *              object with three components which is used to decide which data to process and return (for efficiency):
- * 
- *              { components: t/f, logicHTML: t/f, englishHTML: t/f }
- * @returns Set
- */
- function getConstant(fileName, selection) {
-
-    //STEP 4)
-    const processed = mapToProcessed(fileName).constant();
-    
-    //STEP 5)
-    return processedToSet(processed, selection).constant();
-
-}
-
-/**
- * TOP-DOWN - GET)
- * Gets a pure predicate `set` from storage of type.
- * NOTE: do NOT use this method if you have a pre-processed supposition predicate; instead, use processedToSetPredicate.
- * 
- * @param fileName
- *              fileName to get
- * @param selection
- *              object with three components which is used to decide which data to process and return (for efficiency):
- * 
- *              { components: t/f, logicHTML: t/f, englishHTML: t/f }
- * @returns `set` { components: t/f, logicHTML: t/f, englishHTML: t/f }
- */
- function getPredicate(fileName, selection) {
-
-    //STEP 4)
-    const processed = mapToProcessed(fileName).predicate();
-    
-    //STEP 5)
-    return processedToSet(processed, selection).predicate();
-
-}
-
-/**
- * TOP-DOWN - GET)
- * Gets supposition Set from storage of type.
- * 
- * @param fileName
- *              fileName to get
- * @param selection
- *              object with three components which is used to decide which data to process and return (for efficiency):
- * 
- *              { components: t/f, logicHTML: t/f, englishHTML: t/f }
- * @returns Set
- */
- function getSupposition(fileName, selection) {
-
-    //STEP 4)
-    const processed = mapToProcessed(fileName).supposition();
-    
-    //STEP 5)
-    return processedToSet(processed, selection).supposition();
 
 }

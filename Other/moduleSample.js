@@ -11,7 +11,7 @@
         /**
          * TODO: FILL OUT
          */
-        function TODOFillOut(countMap) {
+        function TODOFillOut() {
 
             //TODO: FILL OUT
 
@@ -57,6 +57,7 @@
     }
 
     /**
+     * Main method for this module.
      * TODO: FILL OUT
      */
      function main() {

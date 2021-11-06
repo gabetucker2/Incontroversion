@@ -11,37 +11,41 @@ domainOfDiscourseElement.innerHTML = domainOfDiscourse.plural;
 //constantsTable
 const constantsTable = document.getElementById("constantsTable");
 
-for (const processed of Array.from(constants.values())) {
+for (const letterGroup of Array.from(constants.values())) {
+    for (const processed of letterGroup) {
 
-    refreshVariables();
-    
-    const set = processedToSet(processed, { components: false, logicHTML: true, englishHTML: true }).constant();
-    
-    constantsTable.innerHTML += (
-        `<tr>
-            <th>${ set.logicHTML }</th>
-            <td>${ set.englishHTML }</td>
-        </tr>`
-    );
+        refreshVariables();
+        
+        const set = processedToSet(processed, { components: false, logicHTML: true, englishHTML: true }).constant();
+        
+        constantsTable.innerHTML += (
+            `<tr>
+                <th>${ set.logicHTML }</th>
+                <td>${ set.englishHTML }</td>
+            </tr>`
+        );
 
+    }
 }
 
 //predicatesTable
 const predicatesTable = document.getElementById("predicatesTable");
 
-for (const processed of Array.from(predicates.values())) {
+for (const letterGroup of Array.from(predicates.values())) {
+    for (const processed of letterGroup) {
     
-    refreshVariables();
+        refreshVariables();
 
-    const set = processedToSet(processed, { components: false, logicHTML: true, englishHTML: true }).predicate();
-    
-    predicatesTable.innerHTML += (
-        `<tr>
-            <th>${ set.logicHTML }</th>
-            <td>${ set.englishHTML }</td>
-        </tr>`
-    );
+        const set = processedToSet(processed, { components: false, logicHTML: true, englishHTML: true }).predicate();
+        
+        predicatesTable.innerHTML += (
+            `<tr>
+                <th>${ set.logicHTML }</th>
+                <td>${ set.englishHTML }</td>
+            </tr>`
+        );
 
+    }
 }
 
 //suppositionsTable
