@@ -88,8 +88,6 @@ function map() {
     
         return thisVariable;
 
-        return main();
-
     }
 
     /**
@@ -657,7 +655,7 @@ function map() {
                         if (variables.storage.has(term.key)) {
 
                             //variable already exists; thus defined quantifier
-                            v = variable().create(term.key);
+                            v = variable().get(term.key);
                             termIsPlural = v.universal;
 
                         } else {
@@ -785,7 +783,7 @@ function map() {
                         //expression
                         depth++;
 
-                        workingLogicHTML += depth === 1 ? `` : `(`;
+                        workingLogicHTML += depth === 1 && root.quantifiers.length === 0 ? `` : `(`;
 
                         //operation 1
                         const operationHTML = symbols.get(root.operation);
@@ -805,8 +803,8 @@ function map() {
                         workingLogicHTML += operand2Results[0];
                         workingEnglishHTML += operand2Results[1];
                         
-                        workingLogicHTML += depth === 1 ? `` : `)`;
-                        workingEnglishHTML += depth === 1 ? `` : `)`;
+                        workingLogicHTML += depth === 1 && root.quantifiers.length === 0 ? `` : `)`;
+                        workingEnglishHTML += depth === 1 || root.quantifiers.length === 0 ? `` : `)`;
 
                         depth--;
                         

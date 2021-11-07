@@ -1,13 +1,18 @@
 /**
  * TODO: FILL OUT
+ * 
+ * @param {Object} fileName
+ *              fileName for the goal
+ * @param {Object} premises
+ *              Array to represent the premises in this scope
  */
- function checkSyntacticEntailment(fileName) {
+ function checkSyntacticEntailment(fileName, premises) {
 
     //set goal
-    const goal = get(fileName, {components:true, logicHTML:false, englishHTML: false}).supposition().data;
+    const goal = get(fileName, {components: true, logicHTML: false, englishHTML: false}).supposition().data;
 
     //add starting suppositions into the workingDerivations (all except for the fileName Object)
-    for (const supposition of suppositions) {
+    for (const supposition of premises) {
         if (supposition.fileName !== fileName) {
             workingDerivations.push(supposition);
         }
@@ -31,6 +36,7 @@
              */
                 function generateNonProvenSuppositions() {
                     //TODO: implement
+                    //return an element working derivation?
                 }
 
                 /**
@@ -54,9 +60,9 @@
                      * 
                      * 
                      * @param {Object} root
-                     *              TODO: fill
+                     *              a sub-supposition of supposition
                      * @param {Object} currentArray
-                     *              TODO: fill
+                     *              an array to be filled with units for root
                      * @updates currentArray with all of root's units
                      */
                      function processUnit(root, currentArray) {
@@ -337,8 +343,19 @@
              *              second unresolved sub-supposition
              */
              function biconditional(supp1, supp2) {
+                
+                let res1 = introduction().conditional(0, supp1);
+                let res2 = introduction().conditional(0, supp2);
 
-                //TODO: fill
+                //so both times will it go through the main derivation checkpoints where it checks for the how the ROC affects
+                //their goals, so we can infer that the conditionals are true (hence: the biconditionals are true)
+                if (res1 === true && res2 === true) {
+                    const expression = {type: `expression`, quantifiers: [], operation: `biconditional`, operands: []};
+                    main(expression);
+                }
+
+                main(derivation);
+                //if both conditionals are true then we can introduce a new expression object to represent their biconditionality
 
             }
 
@@ -350,6 +367,9 @@
              *              second unresolved sub-supposition
              */
              function xdisjunction(supp1, supp2) {
+
+                introduction().negation(supp1);
+                introduction().biconditional(supp1, supp2);
 
                 //TODO fill
 
@@ -600,8 +620,8 @@
 
                     //universal
                     canAddQuantifier = false;
-                    for (const supposition of suppositions) {
-                        processUnit(supposition.data);
+                    for (const premise of premises) {
+                        processUnit(premise.data);
                         if (canAddQuantifier) {
                             break;
                         }

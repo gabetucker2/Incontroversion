@@ -6,11 +6,11 @@
 		[
 			{"type": "universal", "key": 0}
 		],
-		"operation:": "biconditional",
+		"operation": "biconditional",
 		"operands": [
 			{
 				"type": "predicate",
-				"quantifiers":[],
+				"quantifiers": [],
 				"predicate":
 				{
 					"fileName": "friends.json"
@@ -23,7 +23,7 @@
 			},
             {
 				"type": "predicate",
-				"quantifiers":[],
+				"quantifiers": [],
 				"predicate":
 				{
 					"fileName": "feed.json"

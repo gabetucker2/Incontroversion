@@ -1,0 +1,18 @@
+{
+   "data":
+   {
+      "type": "predicate",
+      "quantifiers": [
+         {"type": "existential", "key": 0},
+         {"type": "existential", "key": 1}
+      ],
+      "predicate":
+      {
+         "fileName": "friends.json"
+      },
+      "terms": [
+         {"type": "variable", "key": 0},
+         {"type": "variable", "key": 1}
+      ]
+   }
+}

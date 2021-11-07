@@ -6,11 +6,11 @@
 		[
 			{"type": "universal", "key": 0}
 		],
-		"operation:": "biconditional",
+		"operation": "biconditional",
 		"operands": [
 			{
 				"type": "predicate",
-				"quantifiers":[],
+				"quantifiers": [],
 				"predicate":
 				{
 					"fileName": "trick.json"
@@ -23,10 +23,10 @@
 			},
 			{
 				"type": "predicate",
-				"quantifiers":[],
+				"quantifiers": [],
 				"predicate":
 				{
-					"fileName": "talk.json"
+					"fileName": "talks.json"
 				},
 				"terms":
 				[
