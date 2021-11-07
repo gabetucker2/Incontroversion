@@ -4,7 +4,7 @@
       "type": "predicate",
       "quantifiers": [
          {"type": "existential", "key": 0},
-         {"type": "existential", "key": 1}
+         {"type": "universal", "key": 1}
       ],
       "predicate":
       {

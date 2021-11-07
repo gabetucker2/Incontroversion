@@ -489,7 +489,6 @@ function map() {
      * Returns `processed` supposition.
      */
      function supposition() {
-
         return main(suppositions.find(p => p.fileName === fileName));
 
     }
@@ -502,7 +501,7 @@ function map() {
      */
      function main(processed) {
         
-        if (processed !== undefined) {
+        if (processed !== undefined || processed !== null) {
             return processed;
         } else {
             console.error(`ERROR: failure to retrieve processed Object in mapToProcessed`);
@@ -827,7 +826,7 @@ function map() {
             }
 
         }
-
+        
         return main();
 
     }
@@ -924,6 +923,8 @@ function map() {
 
             //STEP 3)
             processedToMap(components).supposition();//processed
+
+            //TODOTODOTODOTODOTODOTODOTODO: debug why dead info gets inserted into defend object
 
         }
         
@@ -1067,7 +1068,7 @@ function map() {
 
         //STEP 4)
         const processed = mapToProcessed(fileName).supposition();
-        
+
         //STEP 5)
         return processedToSet(processed, selection).supposition();
 

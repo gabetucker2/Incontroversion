@@ -12,7 +12,8 @@
         
         <script src = "Scripts/fundamentalMethodModule.js"></script>
         <script src = "Scripts/HTMLMethodModule.js"></script>
-        <script src = "Scripts/syntacticEntailmentMethodModule.js"></script>
+        <script src = "Scripts/demonstrationModule.js"></script>
+        <!--<script src = "Scripts/syntacticEntailmentMethodModule.js"></script>-->
 
         <div id = "titleContainer">
             <img src = "Images/Text.png" draggable = "false">
@@ -50,11 +51,29 @@
                 <br/>
                 <script>
                     function passToCSE() {
+                        const premises = [];
+                        let k = 0;
+                        for (let i = 0; i < 3; i++) {
+                            premises.push(document.getElementById(`premiseInput${i+1}`).value);
+                            if (document.getElementById(`premiseInput${i+1}`).value != ``) {
+                                k++;
+                            }
+                        }
                         const goal = document.getElementById(`goalInput`);
-                        const result = checkSyntacticEntailment(goal.value).main();
+                        const result = k >= 2;//demonstrationModule(goal.value, premises).init();
+                        const text = document.getElementById("result");
+                        if (result) {
+                            const r = document.getElementById("result");
+                            text.innerHTML = `RESULT: TRUE`;
+                            text.style.color = `#00FF00`;
+                        } else {
+                            text.innerHTML = `RESULT: FALSE`;
+                            text.style.color = `#FF0000`;
+                        }
                     }
                 </script>
-                <button onclick = "passToCSE()">EXECUTE</button>
+                <button onclick = "passToCSE()">EXECUTE</button>=
+                <h1 style = "margin-top: 15%; font-size: 4vh;" id = "result">Result</h1>
             </div>
         </div>
 
