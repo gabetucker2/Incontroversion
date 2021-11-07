@@ -2,13 +2,10 @@
 //SETUP DATA//
 //////////////
 
-for (const letter of Array.from({ length: 26 - 4 }, (_, i) => String.fromCharCode('a'.charCodeAt(0) + i))) {
-    constants.set(letter, []);
-}
-
-for (const letter of Array.from({ length: 26 }, (_, i) => String.fromCharCode('A'.charCodeAt(0) + i))) {
-    predicates.set(letter, []);
-}
+const domainOfDiscourseSingularElement = document.getElementById("DomainOfDiscourseSingular");
+const domainOfDiscoursePluralElement = document.getElementById("DomainOfDiscoursePlural");
+domainOfDiscourseSingularElement.value = domainOfDiscourse.singular;
+domainOfDiscoursePluralElement.value = domainOfDiscourse.plural;
 
 //bidirectional operations: `text {antecedent} text{consequent}`
 symbols.set(`conjunction`, {logicHTML: `∧`, englishHTML: {antecedent: null, consequent: ` and`}});
@@ -30,8 +27,9 @@ setup().all();
 //////////////////////////////
 //Alter HTML event listeners//
 //////////////////////////////
-
+/*
 //disable all dragging
 window.addEventListener("dragstart", function(event) {
     event.preventDefault();
 }, false);
+*/

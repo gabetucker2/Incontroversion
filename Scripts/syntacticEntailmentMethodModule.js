@@ -182,11 +182,15 @@
              *      1 => the second operand is antecendent in =>E
              *
              * @param {Object} nonProvenSupposition
-             *      the consequent???
+             *      the consequent object???
              */
              function conditional(first, nonProvenSupposition) {
 
-                //TODO: FILL OUT
+                if (first === 0 || first === 1) {
+                    //do something teehee
+                } else {
+                    error.console("ERROR: Bad argument!");
+                }
 
                 returnTruthValue(derivation);
 

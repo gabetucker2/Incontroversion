@@ -2,30 +2,160 @@
 //EXTENSIONS//
 //////////////
 
+/*
+ * EXTENSION - FRONTEND - DD HANDLING)
+ * Update variables by Domain of Discourse change.
+ *
+ * @param {string} plurality
+ *              whether the DD updated was plural
+ */
+function updateDD(plurality) {
+     
+    const domainOfDiscourseSingularElement = document.getElementById("DomainOfDiscourseSingular");
+    const domainOfDiscoursePluralElement = document.getElementById("DomainOfDiscoursePlural");
+
+    //set domainOfDIscourseSingularElement to domainOfDiscourse.singular, and do same for plural in here
+    if (plurality === `singular`) {
+        domainOfDiscourse.singular = domainOfDiscourseSingularElement.value;
+    } else if (plurality === `plural`) {
+        domainOfDiscourse.plural = domainOfDiscoursePluralElement.value;
+    }
+
+    //reset up the maps
+    setup().type().predicate();
+    setup().type().supposition();
+
+}
+
 /**
- * TODO: FILL OUT
+ * EXTENSION - FRONTEND - TABLE HANDLING)
+ * Sets up the table of c/p/s on the frontend.
+ */
+ function setupTable() {
+
+    function constant() {
+
+        const table = document.getElementById("constantsTable");
+        table.innerHTML = "";
+
+        for (const letterGroup of Array.from(constants.values())) {
+            for (const processed of letterGroup) {
+    
+                variable().refresh();
+                
+                const set = processedToSet(processed, { components: false, logicHTML: true, englishHTML: true }).constant();
+                
+                table.innerHTML += (
+                    `<tr>
+                        <th>${ set.logicHTML }</th>
+                        <td>${ set.englishHTML }</td>
+                    </tr>`
+                );
+    
+            }
+        }
+    }
+
+    function predicate() {
+        
+        const table = document.getElementById("predicatesTable");
+        table.innerHTML = "";
+
+        for (const letterGroup of Array.from(predicates.values())) {
+            for (const processed of letterGroup) {
+            
+                variable().refresh();
+        
+                const set = processedToSet(processed, { components: false, logicHTML: true, englishHTML: true }).predicate();
+                
+                table.innerHTML += (
+                    `<tr>
+                        <th>${ set.logicHTML }</th>
+                        <td>${ set.englishHTML }</td>
+                    </tr>`
+                );
+        
+            }
+        }
+    }
+
+    function supposition() {
+        
+        const table = document.getElementById("suppositionsTable");
+        table.innerHTML = "";
+
+        for (const processed of suppositions) {
+    
+            variable().refresh();
+        
+            const set = processedToSet(processed, { components: false, logicHTML: true, englishHTML: true }).supposition();
+            
+            table.innerHTML += (
+                `<tr>
+                    <th draggable = "true" style = "flex-grow: 1; text-align: center; margin-bottom: -0.3vh;">${ set.logicHTML }</th>
+                </tr><tr style = "border-top: none;">
+                    <td>${ set.englishHTML }</td>
+                </tr>`
+            );
+        
+        }
+    }
+
+    return {
+        constant: constant,
+        predicate: predicate,
+        supposition: supposition
+    }
+
+}
+
+/**
+ * MAP HANDLING)
+ * Map method module.
+ */
+function map() {
+
+    /**
+     * Refresh Maps in backend saves for type `phi`.
+     */
+    function refresh() {
+
+        function constant() {
+            constants.clear();
+        }
+
+        function predicate() {
+            predicates.clear();
+        }
+
+        function supposition() {
+            suppositions = [];
+        }
+
+        return {
+            constant: constant,
+            predicate : predicate,
+            supposition: supposition
+        }
+
+    }
+
+    return {
+        refresh: refresh
+    }
+
+}
+
+/**
+ * VARIABLE HANDLING)
+ * TODO: fill out
  */
  function variable() {
 
     /**
      * Additional methods for this module.
      */
-     function additional() {
-
-        /**
-         * TODO: FILL OUT
-         */
-        function TODOFillOut() {
-
-            //TODO: FILL OUT
-
-        }
-
-        return {
-            TODOFillOut: TODOFillOut
-        }
-
-    }
+     function additional() { return { } }
 
     /**
      * Get a variable from a key.
@@ -216,7 +346,7 @@
          function addLetterToCountMap(map) {
 
             //set index property
-            Object.defineProperties(raw, { index: {enumerable: true, value: map.get(raw.letter).length + 1}});
+            Object.defineProperties(raw, { index: {enumerable: true, value: map.get(raw.letter).length }});
 
         }
 
@@ -575,6 +705,7 @@
 
     }
 
+
     /**
      * Fill out `logicHTML` and `englishHTML` from constant `processed` Object.
      */
@@ -625,7 +756,7 @@
                     let termIsPlural = false;
 
                     const term = phrase.term;
-
+                    
                     if (term.type === `variable`) {
 
                         let v;
@@ -919,29 +1050,47 @@
      function type() {
 
          function constant() {
+            
+            map().refresh().constant();
+            for (const letter of Array.from({ length: 26 - 4 }, (_, i) => String.fromCharCode('a'.charCodeAt(0) + i))) {
+                constants.set(letter, []);
+            }
     
             const typeFolder = `Saves/Constants`;
             for (const fileName of fileSystem.readdirSync(typeFolder)) {
                 one(fileName).constant();
             }
+
+            setupTable().constant();
     
         }
     
          function predicate() {
+
+            map().refresh().predicate();
+            for (const letter of Array.from({ length: 26 }, (_, i) => String.fromCharCode('A'.charCodeAt(0) + i))) {
+                predicates.set(letter, []);
+            }
     
             const typeFolder = `Saves/Predicates`;
             for (const fileName of fileSystem.readdirSync(typeFolder)) {
                 one(fileName).predicate();
             }
+            
+            setupTable().predicate();
     
         }
     
          function supposition() {
+             
+            map().refresh().supposition();
     
             const typeFolder = `Saves/Suppositions`;
             for (const fileName of fileSystem.readdirSync(typeFolder)) {
                 one(fileName).supposition();
             }
+            
+            setupTable().supposition();
     
         }
         

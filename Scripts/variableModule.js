@@ -26,7 +26,7 @@ const constants = new Map()//of form {'c': [{}, {}, {}], 'd': [{}]}
 const predicates = new Map()//of form {'C': [{}, {}, {}], 'D': [{}]}
 
 //SUPPOSITIONS STORAGE
-const suppositions = [];//of form [{}, {}, {}]
+let suppositions = [];//of form [{}, {}, {}]
 const limitDerivations = 10000;
 const limitDepth = 10;
 let workingDerivations = [];//of form [{}, {}, {}]

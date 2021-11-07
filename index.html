@@ -11,11 +11,10 @@
         <script src = "Scripts/variableModule.js"></script>
         <script src = "Scripts/fundamentalMethodModule.js"></script>
         <!--<script src = "Scripts/syntacticEntailmentMethodModule.js"></script>-->
-        <script src = "Scripts/setupModule.js"></script>
 
         <div id = "titleContainer">
-            <img src = "Images/Text.png">
-            <h1>Domain of discourse: <span class = "lowercase">all <span class = "hoverSelect" id = "DomainOfDiscourse">XXXXXXXXXX</span></span></h1>
+            <img src = "Images/Text.png" draggable = "false">
+            <h1>Domain of discourse: <span class = "lowercase"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;some <input placeholder = "singular" class = "hoverSelect" id = "DomainOfDiscourseSingular" onfocusout = "updateDD('singular')" type = "text"> all <input  placeholder = "plural" class = "hoverSelect" id = "DomainOfDiscoursePlural" onfocusout = "updateDD('plural')" type = "text"></span></h1>
         </div>
 
         <div id = "sectionContainer">
@@ -41,13 +40,13 @@
                 </div>
                 <div style = "width: 45%; margin-right: 5%;">
                     <br/>
-                    <p style = "margin-right: auto; margin-bottom: 1%;">supposition</p>
+                    <p style = "margin-right: auto; margin-bottom: 1%;">goal</p>
                     <input style = "margin-right: 80%; width: 20%;" type = "text" id = "suppositionInput" placeholder = "Drag + Drop">
                 </div>
             </div>
         </div>
 
-        <script src="Scripts/renderModule.js"></script>
+        <script src = "Scripts/setupModule.js"></script>
         
     </body>
 </html>

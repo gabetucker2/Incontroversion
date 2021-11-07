@@ -205,6 +205,12 @@ table {
 
 .hoverSelect {
     text-decoration: underline;
+    background-color: transparent;
+    border: none;
+    color: #FFF;
+    font-family: gothic;
+    font-size: 2vh;
+    text-align: left;
 } .hoverSelect:hover {
     cursor: text;
 }
@@ -215,4 +221,9 @@ table {
 
 .wrap {
     white-space: pre-line;
+}
+
+#suppositionsTable > tr > th:hover {
+    cursor: pointer;
+    text-decoration: underline;
 }
