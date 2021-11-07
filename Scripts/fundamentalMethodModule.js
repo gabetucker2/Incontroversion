@@ -224,7 +224,7 @@ function map() {
  * @updates `raw`, `countConstants`
  */
  function rawToProcessed(raw, fileName) {
-
+//TODO: add more elaborate error checker
     /**
      * Additional methods for this module.
      */

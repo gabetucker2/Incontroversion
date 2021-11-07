@@ -1,0 +1,17 @@
+{
+    "letter": "T",
+    "sentence": [
+        {
+            "type": "term",
+            "term": { "type": "variable", "key": -1 }
+        },
+        {
+            "type": "text",
+            "text": { "singular": "tricks", "plural": "trick" }
+        },
+        {
+            "type": "term",
+            "term": { "type": "variable", "key": -1 }
+        }
+    ]
+}

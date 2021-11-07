@@ -1,0 +1,17 @@
+{
+    "letter": "J",
+    "sentence": [
+        {
+            "type": "term",
+            "term": { "type": "variable", "key": -1 }
+        },
+        {
+            "type": "text",
+            "text": { "singular": "joins", "plural": "join" }
+        },
+        {
+            "type": "term",
+            "term": { "type": "variable", "key": -1 }
+        }
+    ]
+}

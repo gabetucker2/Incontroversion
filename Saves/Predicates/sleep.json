@@ -1,0 +1,17 @@
+{
+    "letter": "S",
+    "sentence": [
+        {
+            "type": "term",
+            "term": { "type": "variable", "key": -1 }
+        },
+        {
+            "type": "text",
+            "text": { "singular": "sleeps with", "plural": "sleep with" }
+        },
+        {
+            "type": "term",
+            "term": { "type": "variable", "key": -1 }
+        }
+    ]
+}

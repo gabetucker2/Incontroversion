@@ -261,40 +261,45 @@
 
             /**
              * Initialize a conjunction operation in a supposition.
-             * 
-             * @param {Object} otherUnit
-             *              the unit being conjoined with `derivation`
              */
-             function conjunction(otherUnit) {
+             function conjunction() {
 
-                //TODO: FILL OUT create new expression NEXT STEP!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! easy
-                //TODO: also make sure all introductions use Object.assign such that old derivation is not overridden
+                for (const other of workingDerivations) {
+                    //make a method such that if a and b, then b and a (return true or false depending on expression equality)
 
-                const expression = Object.assign({}, {type : `expression`, quantifiers: [], operation: `conjunction`, operands: []});
+                        //a => b === b <= a
+                    
+                    //make sure that given our new variables, we're not running extraneous operations just because of what we wanted to avoid
+                    //with what this method will solve TODO TODO TODO
 
-                //simply an assumption => feel free to revise
-                derivation.operation.push(expression);
+                    //TODO; go through mains and update
 
-                main(derivation);
+                    if (other != derivation) {
+                        const expression = {type: `expression`, quantifiers: [], operation: `conjunction`, operands: []};
+                        expression.operands.push(Object.assign({}, dervation));
+                        expression.operands.push(Object.assign({}, other));
+
+                        main(expression);
+                    }
+                }
 
             }
 
             /**
              * Inititalize a disjunction operation in a supposition
-             * @param {Object} otherUnit
-             *                  the unit being disjoined with `derivation`
-             * 
+             * TODO:converge with conjunction
              */
-             function disjunction(otherUnit) {
+             function disjunction() {
 
-                //TODO: FILL OUT
+                for (const other of workingDerivations) {
+                    if (other != derivation) {
+                        const expression = {type: `expression`, quantifiers: [], operation: `disjunction`, operands: []};
+                        expression.operands.push(Object.assign({}, dervation));
+                        expression.operands.push(Object.assign({}, other));
 
-                const expression = Object.assign({}, {type : `expression`, operation: `disjunction`, operands: []});
-                
-                //simply an assumption => feel free to revise
-                derivation.operation.push(expression);
-
-                main(derivation);
+                        main(expression);
+                    }
+                }
 
             }
 
@@ -333,10 +338,7 @@
              */
              function biconditional(supp1, supp2) {
 
-
-                
-
-                main(derivation);
+                //TODO: fill
 
             }
 
@@ -349,10 +351,7 @@
              */
              function xdisjunction(supp1, supp2) {
 
-                //TODO: FILL OUT
-                
-
-                main(derivation);
+                //TODO fill
 
             }
 

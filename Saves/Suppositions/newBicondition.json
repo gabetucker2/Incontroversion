@@ -1,0 +1,40 @@
+{
+	"data":
+	{
+		"type": "expression",
+		"quantifiers":
+		[
+			{"type": "universal", "key": 0}
+		],
+		"operation:": "biconditional",
+		"operands": [
+			{
+				"type": "predicate",
+				"quantifiers":[],
+				"predicate":
+				{
+					"fileName": "friends.json"
+				},
+				"terms":
+				[
+					{"type": "constant", "fileName": "zebra.json"},
+					{"type": "variable", "key": 0}
+				]
+			},
+            {
+				"type": "predicate",
+				"quantifiers":[],
+				"predicate":
+				{
+					"fileName": "feed.json"
+				},
+				"terms":
+				[
+					{"type": "constant", "fileName": "dylan.json"},
+					{"type": "variable", "key": 0}
+				]
+			}
+            
+		]
+	}
+}

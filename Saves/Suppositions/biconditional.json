@@ -1,0 +1,39 @@
+{
+	"data": 
+	{
+		"type": "expression",
+		"quantifiers":
+		[
+			{"type": "universal", "key": 0}
+		],
+		"operation:": "biconditional",
+		"operands": [
+			{
+				"type": "predicate",
+				"quantifiers":[],
+				"predicate":
+				{
+					"fileName": "trick.json"
+				},
+				"terms":
+				[
+					{"type": "constant", "fileName": "dylan.json"},
+					{"type": "variable", "key": 0}
+				]
+			},
+			{
+				"type": "predicate",
+				"quantifiers":[],
+				"predicate":
+				{
+					"fileName": "talk.json"
+				},
+				"terms":
+				[
+					{"type": "constant", "fileName": "fish.json"},
+					{"type": "variable", "key": 0}
+				]
+			}
+		]
+	}
+}

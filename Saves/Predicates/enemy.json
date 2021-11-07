@@ -1,0 +1,17 @@
+{
+    "letter": "E",
+    "sentence": [
+        {
+            "type": "term",
+            "term": { "type": "variable", "key": -1 }
+        },
+        {
+            "type": "text",
+            "text": { "singular": "is enemies with", "plural": "are enemies with" }
+        },
+        {
+            "type": "term",
+            "term": { "type": "variable", "key": -1 }
+        }
+    ]
+}

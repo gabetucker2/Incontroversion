@@ -1,0 +1,17 @@
+{
+    "letter": "F",
+    "sentence": [
+        {
+            "type": "term",
+            "term": { "type": "variable", "key": -1 }
+        },
+        {
+            "type": "text",
+            "text": { "singular": "feeds", "plural": "feed" }
+        },
+        {
+            "type": "term",
+            "term": { "type": "variable", "key": -1 }
+        }
+    ]
+}
