@@ -14,7 +14,7 @@
     }
 
     /**
-     * Passes derivation into returnTruthValue method.
+     * Passes derivation into main method.
      * 
      * @param derivation
      *              derivation from which to derive
@@ -30,11 +30,134 @@
              * 
              */
                 function generateNonProvenSuppositions() {
-                //TODO: implement
-            }
+                    //TODO: implement
+                }
+
+                /**
+                 * Get the rate of change in commonality given a start and a new supposition.
+                 * update TODO: Returns current percent in common between two `suppositions`
+                 * 
+                 * @param {Object} startSup
+                 *              the start supposition
+                 * @param {Object} newSup
+                 *              the new supposition
+                 * @return ROC %
+                 */
+                 function getPercentCommon(startSup, newSup) {
+                    
+                    const startSupUnits = [];
+                    const newSupUnits = [];
+
+                    let currentCommon = 0, totalFactors = 0;
+
+                    /**
+                     * 
+                     * 
+                     * @param {Object} root
+                     *              TODO: fill
+                     * @param {Object} currentArray
+                     *              TODO: fill
+                     * @updates currentArray with all of root's units
+                     */
+                     function processUnit(root, currentArray) {
+
+                        if (root.type === `predicate`) {
+
+                            currentArray.push(root.predicate);
+
+                        } else {
+
+                            currentArray.push(root);
+
+                            processUnit(root.operands[0]);
+
+                            if (root.operation !== `negation`) {
+                                processUnit(root.operands[1]);
+                            }
+
+                        }
+
+                    }
+
+                    processUnit(startSup, startSupUnits);
+                    processUnit(newSup, newSupUnits);
+
+                    for (const unit of startSupUnits) {
+                        if ((unit.type === `expression` && newSupUnits.find(u => u == unit)) || (unit.type === `predicate` && newSupUnits.find(u => u.fileName == unit.fileName))) {
+
+                            const otherUnit = newSupUnits.find(u => u == unit);
+
+                            //predicate => +0.5 - +1
+                            if (unit.type === `predicate`) {
+                                currentCommon += 0.5;
+
+                                for (let i = 0; i < unit.terms.length; i++) {
+                                    const uTerm = unit.terms[i];
+                                    const oTerm = otherUnit.terms[i];
+
+                                    //for each term that one unit has in common w/ the other unit
+                                    //if it's a variable and they point to the same quantifier, then the count is common
+                                    //alternatively, if they're constants and share the same type of constant and it's common
+                                    //then current common variable += 0.5/unit.terms.length
+                                    if ((uTerm.type === oTerm.type) && (uTerm.type === `variable` && (unit.quantifiers.find(q => q.key === uTerm.key).type === otherUnit.quantifiers.find(q => q.key === oTerm.key).type)) || (uTerm.type === `constant` && (uTerm.fileName === oTerm.fileName))) {
+                                        currentCommon += 0.5 / unit.terms.length;
+                                    }
+                                }
+                            }
+
+                            //expression => +1
+                            if (unit.type === `expression`) {
+                                currentCommon += 1;
+                            }
+
+                            //increment
+                            totalFactors += 1;
+
+                        }
+                    }
+
+                    //calculate percent
+                    //input previous percent common
+                    //percent common rn = (common / total)
+                    //ROC % = previousPercentCommon + (common / total) ISH????? return this ROC %
+                    
+                    return currentCommon / totalFactors;
+                }
+
+                /**
+                 * Get ROC/magnitude in change between start and end percent in common between suppositions.
+                 * 
+                 * TODO: fill out
+                 * @param {float} startPercentCommon
+                 *              0-1 float for starting percent in common
+                 * @param {float} endPercentCommon
+                 *              0-1 float for ending percent in common
+                 */
+                function ROC(startPercentCommon, endPercentCommon) {
+
+                    return endPercentCommon / startPercentCommon;
+
+                }
+
+                /**
+                 * Returns whether, given depth and ROC, transformation is within continuation threshold.
+                 * 
+                 * @param {int} depth
+                 * @param {float} ROC
+                 * @return {boolean} t/f for whether within threshold 
+                 */
+                function returnWithinThreshold(depth, ROC) {
+                    
+                    const xTrans = -3;
+                    return 0.5 * ( Math.pow(depth + xTrans, 3) + (depth + xTrans) ) <= ROC;
+
+                }
 
             return {
-                generateNonProvenSuppositions: generateNonProvenSuppositions
+                generateNonProvenSuppositions: generateNonProvenSuppositions,
+                getPercentCommon: getPercentCommon,
+                ROC: ROC,
+                returnWithinThreshold: returnWithinThreshold
             }
          }
 
@@ -86,7 +209,7 @@
 
                 derivation.quantifiers.push({type: `universal`, key: key});
 
-                returnTruthValue(derivation);
+                main(derivation);
 
             }
 
@@ -132,7 +255,7 @@
 
                 derivation.quantifiers.push({type: `existential`, key: key});
 
-                returnTruthValue(derivation);
+                main(derivation);
 
             }
 
@@ -152,7 +275,7 @@
                 //simply an assumption => feel free to revise
                 derivation.operation.push(expression);
 
-                returnTruthValue(derivation);
+                main(derivation);
 
             }
 
@@ -171,7 +294,7 @@
                 //simply an assumption => feel free to revise
                 derivation.operation.push(expression);
 
-                returnTruthValue(derivation);
+                main(derivation);
 
             }
 
@@ -182,54 +305,68 @@
              *      1 => the second operand is antecendent in =>E
              *
              * @param {Object} nonProvenSupposition
-             *      the consequent object???
+             *      the antecedent
              */
              function conditional(first, nonProvenSupposition) {
 
                 if (first === 0 || first === 1) {
-                    //do something teehee
+
+                    main(nonProvenSupposition); //performing each operation on the antecedent//todo fix
+                    
+                    //otherwise we ignore the other operations and say the supposition is contradictory
+
                 } else {
                     error.console("ERROR: Bad argument!");
                 }
 
-                returnTruthValue(derivation);
+                main(derivation);
 
             }
 
             /**
-             * TODO: FILL OUT
+             * Biconditional introduction
+             * 
+             * @param {Object} supp1
+             *              first unresolved sub-supposition
+             * @param {Object} supp2
+             *              second unresolved sub-supposition
              */
-             function biconditional() {
+             function biconditional(supp1, supp2) {
 
-                if (workingDerivations.length >= 2){
-                    
-                }
 
-                //TODO: FILL OUT
+                
 
-                returnTruthValue(derivation);
+                main(derivation);
 
             }
 
             /**
-             * TODO: FILL OUT
+             * Exclusive disjunction introduction
+             * @param {Object} supp1
+             *              first unresolved sub-supposition
+             * @param {Object} supp2
+             *              second unresolved sub-supposition
              */
-             function xdisjunction() {
+             function xdisjunction(supp1, supp2) {
 
                 //TODO: FILL OUT
+                
 
-                returnTruthValue(derivation);
+                main(derivation);
 
             }
 
             /**
-             * TODO: FILL OUT
+             * Negation introduction
+             * 
+             * @param {Object} supp1
+             *              the first unproven supposition in the disjunction
              */
-             function negation() {
+             function negation(supp1) {
 
                 //TODO: FILL OUT
 
-                returnTruthValue(derivation);
+                main(derivation);
 
             }
 
@@ -279,7 +416,7 @@
                 
                 derivation.quantifiers.pop();
 
-                returnTruthValue(derivation);
+                main(derivation);
 
             }
 
@@ -294,7 +431,7 @@
 
                 //TODO: 
 
-                returnTruthValue(derivation);
+                main(derivation);
 
             }
 
@@ -308,7 +445,7 @@
             function conjunction(selection) {
 
                 if (selection === 0 || selection === 1) {
-                    returnTruthValue(Object.assign({}, derivation.operand[selection]))
+                    main(Object.assign({}, derivation.operand[selection]))
                 } else {
                     console.error(`ERROR: Conjunction elimination invalid argument selection`);
                 }
@@ -324,12 +461,12 @@
             function disjunction(selection) {
 
                 if (selection === 0 || selection === 1) {
-                    returnTruthValue(Object.assign({}, derivation.operand[selection]))
+                    main(Object.assign({}, derivation.operand[selection]))
                 } else {
                     console.error('ERROR: Disjunction elimination invalid argument selection');
                 }
 
-                returnTruthValue(derivation);
+                main(derivation);
 
             }
 
@@ -349,7 +486,7 @@
                 if (workingDerivations.length >= 2) {
                     for (const workDer of workingDerivations) {
                         if (workDer == antecedent) {
-                            returnTruthValue(Object.assign({}, consequent));
+                            main(Object.assign({}, consequent));
                             break;
                         }
                     }
@@ -382,7 +519,7 @@
              */
             function negation() {
 
-                returnTruthValue(Object.assign({}, derivation.operands[0]));
+                main(Object.assign({}, derivation.operands[0]));
 
             }
 
@@ -405,8 +542,6 @@
         }
      }
     
-    
-
     /**
      * Adds the derivation to `workingDerivations` Array and returns t/f based on syntactic entailment after sufficient iterations
      *              derivation == goal => return T
@@ -414,20 +549,23 @@
      * 
      * @param {Object} derivation
      *              transformed components with which to check against `goal` for syntactic equivalence, and thus, validity
-     * @param {boolean} deepen
-     *              whether or not to iterate through `workingDerivations` for more transformations (i.e., deepen)
+     * @param {int} depth
+     *              whether or not to iterate through `workingDerivations` for more transformations
+     * @param {float} previousPercentCommon
+     *              0-1 percent common that the previous depth of this derivation had with goal
      * @updates workingDerivation with non-repeat derivations found and refreshes it at the end
      * @returns boolean value to represent whether there is syntactic entailment
      * @ensures error is returned if invalid result
      */
-     function returnTruthValue(derivation, deepen) {//todo: implement deepen
+     function main(derivation, depth, previousPercentCommon) {//todo: implement deepen
+
         //TODO: optimize by having array for all operations performed as string saves so you dont repeatedly run same operation for repeats and just be halted at last minute by precondition inside of returTruthValue method
         let result = null;
         if (goal == derivation) {
             result = true;
         } else if (derivation != goal && workingDerivations.length === limitDerivation) {
             result = false;
-        } else if (!workingDerivations.find(d => d == derivation)) {
+        } else if (!workingDerivations.find(d => d == derivation) && additional().returnWithinThreshold(depth, additional().ROC(previousPercentCommon, additional().getPercentCommon(derivation, goal)))) {
 
             //add representation to Array iff it is not already therein
             workingDerivations.push(derivation);
@@ -494,19 +632,14 @@
 
                 //conditional
                 for (const nonProvenSupposition of additional().generateNonProvenSuppositions()) {
-                    derive(derivation).introduction().conditional(0, nonProvenSupposition);
-                }
-                
-                //revconditional
-                for (const nonProvenSupposition of additional().generateNonProvenSuppositions()) {
-                    derive(derivation).introduction().biconditional(1, nonProvenSupposition);
+                    derive(derivation).introduction().conditional(nonProvenSupposition);
                 }
                 
                 //biconditional
                 for (const nonProvenSupposition1 of additional().generateNonProvenSuppositions()) {
                     for (const nonProvenSupposition2 of additional().generateNonProvenSuppositions()) {
                         if (nonProvenSupposition1 != nonProvenSupposition2) {
-                            introduction().biconditional(nonProvenSupposition1, nonProvenSupposition2);
+                            derive(derivation).introduction().biconditional(nonProvenSupposition1, nonProvenSupposition2);
                         }
                     }
                 }
@@ -516,14 +649,14 @@
                 for (const nonProvenSupposition1 of additional().generateNonProvenSuppositions()) {
                     for (const nonProvenSupposition2 of additional().generateNonProvenSuppositions()) {
                         if (nonProvenSupposition1 != nonProvenSupposition2) {
-                            introduction().xdisjunction(nonProvenSupposition1, nonProvenSupposition2);
+                            derive(derivation).introduction().xdisjunction(nonProvenSupposition1, nonProvenSupposition2);
                         }
                     }
                 }
                 
                 //negation
                 for (const nonProvenSupposition of additional().generateNonProvenSuppositions()) {
-                    introduction().negation(1, nonProvenSupposition);
+                    derive(derivation).introduction().negation(nonProvenSupposition);
                 }
 
 
@@ -571,21 +704,21 @@
             }
 
         } else {
-            //VOID so that it can break the recursive derivations
+            result = false;
         }
 
         if (result !== null) {
             workingDerivations = [];
             return result;
         } else {
-            console.error(`ERROR: syntacticEntailmentMethodModule > returnTruthValue has invalid result boolean value`);
+            console.error(`ERROR: syntacticEntailmentMethodModule > main has invalid result boolean value`);
         }
 
     }
     
     return {
         derive: derive,
-        returnTruthValue: returnTruthValue
+        main: main
     }
 
 }

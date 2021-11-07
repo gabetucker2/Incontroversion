@@ -86,11 +86,11 @@ function updateDD(plurality) {
     
             variable().refresh();
         
-            const set = processedToSet(processed, { components: false, logicHTML: true, englishHTML: true }).supposition();
+            const set = processedToSet(processed, { components: true, logicHTML: true, englishHTML: true }).supposition();
             
             table.innerHTML += (
                 `<tr>
-                    <th name = "suppositionTitle" draggable = "true" ondrop = "suppositionDrag().drop(event)" style = "flex-grow: 1; text-align: center; margin-bottom: -0.3vh;">${ set.logicHTML }</th>
+                    <th name = "suppositionTitle" draggable = "true" ondragstart = "event.dataTransfer.setData('text/plain', '${ set.components.fileName }')" style = "flex-grow: 1; text-align: center; margin-bottom: -0.3vh;">${ set.logicHTML }</th>
                 </tr><tr style = "border-top: none;">
                     <td>${ set.englishHTML }</td>
                 </tr>`
@@ -103,27 +103,6 @@ function updateDD(plurality) {
         constant: constant,
         predicate: predicate,
         supposition: supposition
-    }
-
-}
-
-/**
- * TODO: fill out
- */
- function suppositionDrag() {
-    
-    function drop(event) {
-
-        const textInput = event.dataTransfer.getData("Text");
-        const target = event.target;
-
-        if (target.name == "suppositionTitle") {
-            target.innerHTML = textInput;
-        }
-    }
-
-    return {
-        drop: drop
     }
 
 }

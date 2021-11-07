@@ -12,7 +12,7 @@
         
         <script src = "Scripts/fundamentalMethodModule.js"></script>
         <script src = "Scripts/HTMLMethodModule.js"></script>
-        <!--<script src = "Scripts/syntacticEntailmentMethodModule.js"></script>-->
+        <script src = "Scripts/syntacticEntailmentMethodModule.js"></script>
 
         <div id = "titleContainer">
             <img src = "Images/Text.png" draggable = "false">
@@ -38,13 +38,23 @@
                 
                 <div style = "width: 45%; margin-left: 5%;">
                     <p style = "margin-right: auto; margin-bottom: 1%;">premises</p>
-                    <input style = "margin-right: 80%; width: 20%;" type = "text" id = "suppositionInput" placeholder = "Drag + Drop">
+                    <input style = "margin-right: 70%; width: 30%;" type = "text" id = "premiseInput1" placeholder = "Drag + Drop">
+                    <input style = "margin-right: 70%; width: 30%;" type = "text" id = "premiseInput2" placeholder = "Drag + Drop">
+                    <input style = "margin-right: 70%; width: 30%;" type = "text" id = "premiseInput3" placeholder = "Drag + Drop">
                 </div>
                 <div style = "width: 45%; margin-right: 5%;">
                     <br/>
                     <p style = "margin-right: auto; margin-bottom: 1%;">goal</p>
-                    <input style = "margin-right: 80%; width: 20%;" type = "text" id = "suppositionInput" placeholder = "Drag + Drop">
+                    <input style = "margin-right: 70%; width: 30%;" type = "text" id = "goalInput" placeholder = "Drag + Drop">
                 </div>
+                <br/>
+                <script>
+                    function passToCSE() {
+                        const goal = document.getElementById(`goalInput`);
+                        const result = checkSyntacticEntailment(goal.value).returnTruthValue();
+                    }
+                </script>
+                <button onclick = "passToCSE()">EXECUTE</button>
             </div>
         </div>
 

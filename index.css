@@ -108,6 +108,8 @@ table {
     white-space: break-spaces;
     padding: 0;
     margin: 0;
+} input, button {
+    font-family: gothic;
 }
 
 /*SPECIFIC ELEMENTS*/
