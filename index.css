@@ -60,6 +60,16 @@ h1 {
     font-family: gothic;
     text-transform: uppercase;
     margin: 0;
+} h2 {
+    color: #AAA;
+    font-size: 2vh;
+    min-height: 2vh;
+    font-family: gothic;
+    text-transform: lowercase;
+    margin: 0;
+    border: 0.25vw #111;
+    border-style: dotted none none none;
+    padding: 1% 0;
 }
 
 
@@ -90,6 +100,14 @@ table {
 } table > * > * > td {
     flex-grow: 1;
     color: #AAA;
+} p {
+    color: #FFF;
+    flex-basis: 0;
+    font-family: cafe;
+    font-size: 1vw;
+    white-space: break-spaces;
+    padding: 0;
+    margin: 0;
 }
 
 /*SPECIFIC ELEMENTS*/
@@ -122,11 +140,18 @@ table {
     flex-grow: 95;
 } #sectionContainer > * {/*viewer/workspace container*/
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
 
     flex-basis: 0;
     flex-grow: 1;
-} #sectionContainer > * > * {/*viewer/workspace*/
+
+    border: 0.25vw #222;
+} #workspaceContainer {
+    border-style: dotted none none;
+    display: block;
+} #viewerContainer {
+    border-style: dotted dotted none none;
+} #viewerContainer > * {/*viewer*/
     display: flex;
     flex-direction: column;
 
@@ -134,21 +159,22 @@ table {
     flex-grow: 1;
 
     min-height: 20%;
-
-    border: 0.25vw #222;
-    border-style: dotted none none none;
-} #sectionContainer > * > * > * {/*things in viewer/workspace*/
+} #workspaceContainer > * {/*workspace*/
+    width: 100%;
+} #viewerContainer > * > * {/*things in viewer/workspace*/
     display: flex;
     flex-direction: column;
 } #sectionContainer > * > * > h1 {/*h1 in viewer/workspace*/
-    flex-basis: 0;
-    flex-grow: 5;
-
     padding: 1% 0;
     display: inline-block;
-} #sectionContainer > * > * > *:not(h1) {/*non-h1 in viewer/worksapce*/
+} #viewerContainer > * > *:not(h1) {/*non-h1 in viewer*/
     flex-basis: 0;
     flex-grow: 95;
+} #workspaceContainer > * > *:not(h1) {/*non-h1 in workspace*/
+    float: left;
+} #workspaceContainer > div {/*workspace*/
+    display: inline-block;
+    width: 50%;
 }
 
 

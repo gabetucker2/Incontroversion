@@ -20,10 +20,10 @@
 
         <div id = "sectionContainer">
             <div id = "viewerContainer">
-                <div><!--CONSTANTS-->
+                <div style = "flex-grow: 0.45;"><!--CONSTANTS-->
                     <h1>Constants <span class = "subText lowercase darken">a-v</span></h1>
                     <table><tbody id = "constantsTable"></tbody></table>
-                </div><div><!--PREDICATES-->
+                </div><div style = "flex-grow: 0.7;"><!--PREDICATES-->
                     <h1>Predicates <span class = "superText uppercase darken">A-Z</span> <span class = "subText lowercase darken">w-z</span></h1>
                     <table><tbody id = "predicatesTable"></tbody></table>
                 </div><div><!--SUPPOSITIONS-->
@@ -31,8 +31,18 @@
                     <table><tbody id = "suppositionsTable"></tbody></table>
                 </div>
             </div><div id = "workspaceContainer">
-                <div>
-                    <h1>Workspace</h1>
+                <h1 style = "width: 100%; padding: 0.625%;">Workspace</h1>
+
+                <h2>Syntactic Entailment</h2>
+                
+                <div style = "width: 45%; margin-left: 5%;">
+                    <p style = "margin-right: auto; margin-bottom: 1%;">premises</p>
+                    <input style = "margin-right: 80%; width: 20%;" type = "text" id = "suppositionInput" placeholder = "Drag + Drop">
+                </div>
+                <div style = "width: 45%; margin-right: 5%;">
+                    <br/>
+                    <p style = "margin-right: auto; margin-bottom: 1%;">supposition</p>
+                    <input style = "margin-right: 80%; width: 20%;" type = "text" id = "suppositionInput" placeholder = "Drag + Drop">
                 </div>
             </div>
         </div>

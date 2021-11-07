@@ -4,7 +4,7 @@
  function checkSyntacticEntailment(fileName) {
 
     //set goal
-    const goal = get(fileName, {components:true, logicHTML:false, englishHTML: false}).supposition();
+    const goal = get(fileName, {components:true, logicHTML:false, englishHTML: false}).supposition().data;
 
     //add starting suppositions into the workingDerivations (all except for the fileName Object)
     for (const supposition of suppositions) {
@@ -22,49 +22,154 @@
      function derive(derivation) {
 
         /**
+         * Additional methods for this module.
+         */
+         function additional() {
+            /////////////////////////////////////////////////////////////TODO: CREATE OUTLINE FOR SUBDERIVATION METHOD since they do not derive from `derivation` (part of it for EI since even tho premise isnt proven, it needs a subderivation)
+            /**
+             * 
+             */
+                function generateNonProvenSuppositions() {
+                //TODO: implement
+            }
+
+            return {
+                generateNonProvenSuppositions: generateNonProvenSuppositions
+            }
+         }
+
+        /**
          * Introduction derivation rules for this module.
          */
         function introduction() {
 
             /**
              * Universal introduction
+             * 
+             * @param {int} key
+             *        possible values for "key" key in Object map
              */
-            function universal() {
+            function universal(key) {
 
-                //TODO: FILL OUT
+                //recursively iterate through the supposition
+
+                //TODO: make additional method to shorten repeat code in ui and ei
+
+                /**
+                 * Recursive loop to initialize a predicate unit in a supposition.
+                 * 
+                 * @param root
+                 *              Unit object
+                 * @updates root
+                 * @requires root is valid
+                 * @ensures invalid values return an error
+                 */
+                 function processUnit(root) {
+                    if (root.type === `predicate`) {
+                        for (const term of root.terms) {
+                            if (term.type === `constant` && term.key === key) {
+                                //convert found constant into var
+                                term.type = "variable";
+                                //del fileName
+                                delete term.fileName;
+                                //define key
+                                Object.defineProperties(term, { key: {enumerable: true, value: key} });
+                            }
+                        }
+                    } else {
+                        processUnit(root.operands[0]);
+                        processUnit(root.operands[1]);
+                    }
+                }
+
+                processUnit(derivation);
+
+                derivation.quantifiers.push({type: `universal`, key: key});
 
                 returnTruthValue(derivation);
 
             }
 
             /**
-             * TODO: FILL OUT
+             * Existential introduction
+             * 
+             * @param {int} key
+             *              possible values for "key" key in Object map
+             * @requires precondition is met of constant existing
              */
-            function existential() {
+            function existential(key) {
 
-                //TODO: FILL OUT
+                //recursively iterate through the supposition
+
+                /**
+                 * Recursive loop to initialize a predicate unit in a supposition.
+                 * 
+                 * @param root
+                 *              Unit object
+                 * @updates root
+                 * @requires root is valid
+                 * @ensures invalid values return an error
+                 */
+                 function processUnit(root) {
+                    if (root.type === `predicate`) {
+                        for (const term of root.terms) {
+                            if (term.type === `constant` && term.key === key) {
+                                //convert found constant into var
+                                term.type = "variable";
+                                //del fileName
+                                delete term.fileName;
+                                //define key
+                                Object.defineProperties(term, { key: {enumerable: true, value: key} });
+                            }
+                        }
+                    } else {
+                        processUnit(root.operands[0]);
+                        processUnit(root.operands[1]);
+                    }
+                }
+
+                processUnit(derivation);
+
+                derivation.quantifiers.push({type: `existential`, key: key});
 
                 returnTruthValue(derivation);
 
             }
 
             /**
-             * TODO: FILL OUT
+             * Initialize a conjunction operation in a supposition.
+             * 
+             * @param {Object} otherUnit
+             *              the unit being conjoined with `derivation`
              */
-            function conjunction() {
+             function conjunction(otherUnit) {
 
-                //TODO: FILL OUT
+                //TODO: FILL OUT create new expression NEXT STEP!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! easy
+                //TODO: also make sure all introductions use Object.assign such that old derivation is not overridden
+
+                const expression = Object.assign({}, {type : `expression`, quantifiers: [], operation: `conjunction`, operands: []});
+
+                //simply an assumption => feel free to revise
+                derivation.operation.push(expression);
 
                 returnTruthValue(derivation);
 
             }
 
             /**
-             * TODO: FILL OUT//TODO: ASK GABE ABOUT THIS ONE
+             * Inititalize a disjunction operation in a supposition
+             * @param {Object} otherUnit
+             *                  the unit being disjoined with `derivation`
+             * 
              */
-            function disjunction() {
+             function disjunction(otherUnit) {
 
                 //TODO: FILL OUT
+
+                const expression = Object.assign({}, {type : `expression`, operation: `disjunction`, operands: []});
+                
+                //simply an assumption => feel free to revise
+                derivation.operation.push(expression);
 
                 returnTruthValue(derivation);
 
@@ -72,15 +177,14 @@
 
             /**
              * Conditional introduction.
-             * 
+             * @param {int} first
+             *      0 => the first operand is antecedent in =>E
+             *      1 => the second operand is antecendent in =>E
+             *
+             * @param {Object} nonProvenSupposition
+             *      the consequent???
              */
-            function conditional() {
-
-                if (workingDerivations.length >= 2) {
-                    //we want to get the first index of ⇒ so that we can split it up into 2 subsets
-                    //check and see if P is true and Q is false. 
-                    derivation = 
-                }
+             function conditional(first, nonProvenSupposition) {
 
                 //TODO: FILL OUT
 
@@ -91,7 +195,7 @@
             /**
              * TODO: FILL OUT
              */
-            function biconditional() {
+             function biconditional() {
 
                 if (workingDerivations.length >= 2){
                     
@@ -106,7 +210,7 @@
             /**
              * TODO: FILL OUT
              */
-            function xdisjunction() {
+             function xdisjunction() {
 
                 //TODO: FILL OUT
 
@@ -117,7 +221,7 @@
             /**
              * TODO: FILL OUT
              */
-            function negation() {
+             function negation() {
 
                 //TODO: FILL OUT
 
@@ -153,11 +257,11 @@
             function universal(constant) {
                 
                 //replace this quantifier with constant
-                for (const operand of derivation.operands) {
+                for (const operand of Object.assign({}, derivation.operands)) {
                     if (operand.type === `predicate`) {
                         for (const term of operand.terms) {
                             if (term === `variable` && term.key === derivation.quantifiers[derivation.quantifiers.length - 1].key) {
-                                //transform the term
+                                //convert found var into constant
                                 term.type = "constant";
                                 //del key
                                 delete term.key;
@@ -184,7 +288,7 @@
              */
             function existential(constant) {
 
-                //TODO get it
+                //TODO: 
 
                 returnTruthValue(derivation);
 
@@ -312,8 +416,8 @@
      * @returns boolean value to represent whether there is syntactic entailment
      * @ensures error is returned if invalid result
      */
-     function returnTruthValue(derivation, deepen) {
-        
+     function returnTruthValue(derivation, deepen) {//todo: implement deepen
+        //TODO: optimize by having array for all operations performed as string saves so you dont repeatedly run same operation for repeats and just be halted at last minute by precondition inside of returTruthValue method
         let result = null;
         if (goal == derivation) {
             result = true;
@@ -326,33 +430,97 @@
 
             //deepen
             if (derivation.type === `expression`) {
-                //INTRODUCTION
                 
-                //universal
+                //INTRODUCTION
+
+                //TODO: add workingDerivations.length >= 2 precondition for non-subderivation introduction operations
+
+                //DO FOR EACH CONSTANT SUCH THAT ANY CONSTANT DOES NOT EXCLUSE CONSTANT BEING INTRODUCED FOR UNIVERSAL AND EXISTENTIAL
+                let canAddQuantifier = false;
+                function processUnit(root) {
+                    
+                    if (root.type === `predicate`) {
+                        for (const term of root.terms) {
+                            if (term.type === `constant`) {
+                                canAddQuantifier = true;
+                                break;
+                            }
+                        }
+                    } else {
+                        processUnit(root.operands[0]);
+                        processUnit(root.operands[1]);
+                    }
+
+                }
+
+                processUnit(derivation);
+                
+                if (canAddQuantifier) {
+
+                    //universal
+                    canAddQuantifier = false;
+                    for (const supposition of suppositions) {
+                        processUnit(supposition.data);
+                        if (canAddQuantifier) {
+                            break;
+                        }
+                    }
+
+                    if (canAddQuantifier) {
+                        derive(derivation).introduction().universal(derivation.indexOf(`universal`));
+                    }
+    
+                    //existential
+                    derive(derivation).introduction().existential(derivation.indexOf(`existential`));
+
+                }
 
 
-                //existential
-
-
-                //conjunction & disjunction
                 for (const d of workingDerivations) {
-                    derive(derivation).introduction().conjunction();
-                    derive(derivation).introduction().disjunction();
+                    
+                    //conjunction
+                    derive(derivation).introduction().conjunction(d);
+                
+                }
+
+                //disjunction
+                for (const nonProvenSupposition of additional().generateNonProvenSuppositions()) {
+                    derive(derivation).introduction().disjunction(nonProvenSupposition);
                 }
 
                 //conditional
+                for (const nonProvenSupposition of additional().generateNonProvenSuppositions()) {
+                    derive(derivation).introduction().conditional(0, nonProvenSupposition);
+                }
                 
-
                 //revconditional
-
-
+                for (const nonProvenSupposition of additional().generateNonProvenSuppositions()) {
+                    derive(derivation).introduction().biconditional(1, nonProvenSupposition);
+                }
+                
                 //biconditional
+                for (const nonProvenSupposition1 of additional().generateNonProvenSuppositions()) {
+                    for (const nonProvenSupposition2 of additional().generateNonProvenSuppositions()) {
+                        if (nonProvenSupposition1 != nonProvenSupposition2) {
+                            introduction().biconditional(nonProvenSupposition1, nonProvenSupposition2);
+                        }
+                    }
+                }
 
 
                 //xdisjunction
-
-
+                for (const nonProvenSupposition1 of additional().generateNonProvenSuppositions()) {
+                    for (const nonProvenSupposition2 of additional().generateNonProvenSuppositions()) {
+                        if (nonProvenSupposition1 != nonProvenSupposition2) {
+                            introduction().xdisjunction(nonProvenSupposition1, nonProvenSupposition2);
+                        }
+                    }
+                }
+                
                 //negation
+                for (const nonProvenSupposition of additional().generateNonProvenSuppositions()) {
+                    introduction().negation(1, nonProvenSupposition);
+                }
 
 
                 //ELIMINATION
@@ -366,7 +534,7 @@
                         }
                         break;
                     case 'exisistential':
-                        //TODO: ensure you don't need preconditions met
+                        //TODO: ensure none of the constants are in open assumptions
                         derive(derivation).elimination().existential();
                         break;
                     case 'conjunction':
